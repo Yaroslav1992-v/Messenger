@@ -6,7 +6,6 @@ export interface LoginData {
 }
 export interface RegisterData extends LoginData {
   email: string;
-  password: string;
   username: string;
 }
 export interface TextFieldProps {
@@ -14,4 +13,6 @@ export interface TextFieldProps {
   placeholder: string;
   onChange: (e: TextFieldChange) => void;
   name: string;
+  error?: string;
 }
+export interface AuthErrors extends Partial<RegisterData> {}
