@@ -30,7 +30,7 @@ const Auth = () => {
           className="bg-white p-8 shadow-md rounded-md
           max-w-md mx-auto w-full flex flex-col items-center"
         >
-          <Logo />
+          <Logo size="large" />
           <h5 className="font-medium mb-5 text-2xl">
             {"Sign " + (ifForm ? "In" : "Up")}
           </h5>

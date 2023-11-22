@@ -10,3 +10,15 @@ body {
 button {
   font-weight: 500;
 }
+
+svg {
+  transition: ease 0.3s;
+}
+
+.menu>li>a:hover>svg, .nav-bottom-btn:hover>button>svg {
+  color: #4299e1 !important
+}
+
+.menu>li:hover>.info-item, .nav-bottom-btn>button:hover>.info-item, .user-avatar:hover>.info-item {
+  opacity: 0.5;
+}

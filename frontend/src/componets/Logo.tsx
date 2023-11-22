@@ -1,8 +1,11 @@
-export const Logo = () => {
+import clsx from "clsx";
+
+export const Logo: React.FC<{ size: "sm" | "large" }> = ({ size }) => {
+  const sizes = size === "sm" ? "h-10 w-10" : "h-16 w-16";
   return (
-    <div className="logo mb-2">
+    <div className={`logo mb-2 flex  `}>
       <svg
-        className="w-16 h-16 text-blue-500"
+        className={clsx(`text-blue-500`, sizes)}
         version="1.1"
         xmlns="http://www.w3.org/2000/svg"
         xmlnsXlink="http://www.w3.org/1999/xlink"

@@ -3,4 +3,7 @@ export * from "./Form/RegisterForm";
 export * from "./Logo";
 export * from "./Button";
 export * from "./Loader";
-export * from "./Navigation/Navigation";
+export * from "./Navigation/Layout";
+export * from "./HoverInfo";
+export * from "./Avatar";
+export * from "./Dropdown/Dropdown";
