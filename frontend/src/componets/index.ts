@@ -7,3 +7,5 @@ export * from "./Navigation/Layout";
 export * from "./HoverInfo";
 export * from "./Avatar";
 export * from "./Dropdown/Dropdown";
+export * from "./EditModal/EditProfileModal";
+export * from "./Form/EditForm";

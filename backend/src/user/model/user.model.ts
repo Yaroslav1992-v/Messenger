@@ -1,4 +1,5 @@
-import mongoose from 'mongoose';
+import mongoose, { Types } from 'mongoose';
+
 const Schema = mongoose.Schema;
 export const userSchema = new Schema(
   {
@@ -6,6 +7,11 @@ export const userSchema = new Schema(
     password: { type: String },
     username: { type: String },
     image: { type: String },
+    city: { type: String },
+    phone: { type: String },
+    website: { type: String },
+    about: { type: String },
+    social: [{ type: Object }],
   },
   { timestamps: true },
 );
@@ -15,4 +21,23 @@ export interface User {
   password: string;
   username: string;
   image?: string;
+  city?: string;
+  phone?: string;
+  website?: string;
+  about?: string;
+  social: Social[];
 }
+export interface UserData extends User {
+  _id: Types.ObjectId;
+}
+export interface Social {
+  name: string;
+  value: string;
+}
+export const Socials: Social[] = [
+  { name: 'facebook', value: '' },
+  { name: 'github', value: '' },
+  { name: 'linkedIn', value: '' },
+  { name: 'twitter', value: '' },
+  { name: 'instagram', value: '' },
+];

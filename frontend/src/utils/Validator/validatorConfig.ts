@@ -27,6 +27,19 @@ export const registerValidator: ValidationConfig = {
     },
   },
 };
+export const editValidator: ValidationConfig = {
+  email: {
+    isRequired: { message: "Email is Required   " },
+    isEmail: { message: "Invalid Email " },
+  },
+  username: {
+    isRequired: { message: "Username is Required  " },
+    min: {
+      message: "Username name must contain  at least 5 symbols",
+      value: 5,
+    },
+  },
+};
 export const loginValidator: ValidationConfig = {
   email: {
     isRequired: { message: "Email is Required For Login" },

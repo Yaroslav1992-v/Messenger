@@ -6,6 +6,8 @@ import { UserModule } from './user/user.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { getMongoConfig } from './config/mongo.config';
+import { JwtModule } from './jwt/jwt.module';
+import { FileModule } from './file/file.module';
 
 @Module({
   imports: [
@@ -17,6 +19,8 @@ import { getMongoConfig } from './config/mongo.config';
     ConfigModule.forRoot(),
     UserModule,
     AuthModule,
+    JwtModule,
+    FileModule,
   ],
 
   controllers: [AppController],

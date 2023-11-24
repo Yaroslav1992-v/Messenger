@@ -10,6 +10,7 @@ import {
 import { LoginDto, RegisterDto } from './dto/auth.dto';
 import { AuthService } from './auth.service';
 import { ALREADY_EXISTS } from 'src/Constants/constants';
+import { Socials } from 'src/user/model/user.model';
 
 @Controller('auth')
 export class AuthController {
@@ -21,7 +22,8 @@ export class AuthController {
     if (oldUser) {
       throw new BadRequestException(ALREADY_EXISTS);
     }
-    return this.authService.createUser(dto);
+    const user = { ...dto, social: Socials };
+    return this.authService.createUser(user);
   }
   @HttpCode(200)
   @Post('login')

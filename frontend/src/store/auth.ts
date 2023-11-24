@@ -7,18 +7,20 @@ import {
 
 import localStorageService from "../service/localStorageService";
 import authService from "../service/authService";
-import { UserData } from "./types";
+import { UserData, UserMinData } from "./types";
 import {
   AuthErrors,
   LoginData,
   RegisterData,
 } from "../componets/Form/formTypes";
+import userService from "../service/userService";
+import fileService from "../service/fileService";
 
 interface AuthState {
   isLoading: boolean;
   error: string | null | AuthErrors;
   auth: { userId: string | null } | null;
-  currentUser: UserData | null;
+  currentUser: UserData | UserMinData | null;
   dataLoaded: boolean;
   isLoggedIn: boolean;
   authSuccess: string | null;
@@ -50,7 +52,10 @@ export const authSlice = createSlice({
     authRequested: (state: AuthState) => {
       state.isLoading = true;
     },
-    userReceived: (state: AuthState, action: PayloadAction<UserData>) => {
+    userReceived: (
+      state: AuthState,
+      action: PayloadAction<UserData | UserMinData>
+    ) => {
       state.dataLoaded = true;
       state.currentUser = action.payload;
       state.isLoading = false;
@@ -77,6 +82,17 @@ export const authSlice = createSlice({
     },
     authErrorReset: (state: AuthState) => {
       state.error = null;
+    },
+    userEditRequested: (state: AuthState) => {
+      state.isLoading = true;
+    },
+    userEdited: (
+      state: AuthState,
+      action: PayloadAction<[{ user: UserData }, { message: string }]>
+    ) => {
+      state.currentUser = action.payload[0].user;
+      state.authSuccess = action.payload[1].message;
+      state.isLoading = false;
     },
 
     loggedOut: (state: AuthState) => {
@@ -129,19 +145,56 @@ export const resetAuthError = () => (dispatch: Dispatch) => {
   dispatch(authErrorReset());
 };
 
-// export const loadCurrentUser = () => async (dispatch: Dispatch) => {
-//   try {
-//     dispatch(userRequsted());
-//     const data = await userService.getUserById(
-//       localStorageService.getUserId()!
-//     );
-//     dispatch(userReceived(data));
-//   } catch (error: any) {
-//     const message = error.response?.data?.message || "Something went wrong";
-//     dispatch(authRequestFailed(message));
-//   }
-// };
+export const loadCurrentUser =
+  (min: boolean = true) =>
+  async (dispatch: Dispatch) => {
+    try {
+      dispatch(userRequsted());
+      let data: UserData | UserMinData;
+      if (min) {
+        data = await userService.getMinUserById(
+          localStorageService.getUserId()!
+        );
+      } else {
+        data = await userService.getUserById(localStorageService.getUserId()!);
+      }
 
+      dispatch(userReceived(data));
+    } catch (error: any) {
+      const message = error.response?.data?.message || "Something went wrong";
+      dispatch(authRequestFailed(message));
+    }
+  };
+export const editUser =
+  (user: UserData, file?: File) => async (dispatch: Dispatch) => {
+    let image;
+    try {
+      dispatch(userEditRequested());
+      if (file) {
+        image = await fileService.uploadFile(file);
+        if (user.image) {
+          await fileService.deleteFile(user.image);
+        }
+        user = { ...user, image: image };
+      }
+      const editedUser = await userService.editUser({
+        ...user,
+      });
+      dispatch(userEdited([{ user: editedUser }, { message: "User Edited" }]));
+    } catch (error: any) {
+      const message = error.response?.data?.message || "Something went wrong";
+      if (Array.isArray(message)) {
+        const errors: AuthErrors = {
+          username: message.find((m: string) => m.includes("username")),
+          email: message.find((m: string) => m.toLowerCase().includes("email")),
+          password: message.find((m: string) => m.includes("password")),
+        };
+        dispatch(authRequestFailed(errors));
+      } else {
+        dispatch(authRequestFailed(message));
+      }
+    }
+  };
 export const logOut = () => (dispatch: Dispatch) => {
   dispatch(loggedOut());
   localStorageService.removeAuthData();
@@ -165,7 +218,7 @@ export const getAuthLoading =
     state.authStore.isLoading;
 export const getCurrentUser =
   () =>
-  (state: { authStore: AuthState }): UserData | null =>
+  (state: { authStore: AuthState }): UserData | UserMinData | null =>
     state.authStore.currentUser;
 
 export const getCurrentUserId =
@@ -181,6 +234,8 @@ const {
   authRequestFailed,
   userReceived,
   authErrorReset,
+  userEditRequested,
+  userEdited,
 } = actions;
 
 export default authReducer;

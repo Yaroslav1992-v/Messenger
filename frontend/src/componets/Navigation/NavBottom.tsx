@@ -4,15 +4,15 @@ import { MdOutlineWbSunny } from "react-icons/md";
 import { HoverInfo } from "../HoverInfo";
 import { black, white } from "../../colors/colors";
 import { useApp } from "../../hooks/UseApp";
-import { useState } from "react";
 import { DropDown, Avatar } from "../index";
 
 const NavBottom = () => {
-  const { handleMode, isDark } = useApp();
+  const { handleMode, isDark, openModal, openDropDown, dropdown, user } =
+    useApp();
   const dropDownMenu = [
     {
       name: "Edit Profile",
-      action: () => {},
+      action: openModal,
     },
     {
       name: "Settings",
@@ -24,10 +24,6 @@ const NavBottom = () => {
       last: true,
     },
   ];
-  const [dropDown, setDropDown] = useState<boolean>(false);
-  const toggleDropDown = () => {
-    setDropDown((prev) => !prev);
-  };
   return (
     <div className="flex flex-col items-center justify-center">
       <div className="nav-bottom-btn flex   ">
@@ -51,15 +47,16 @@ const NavBottom = () => {
               size={25}
               color={isDark ? white : black}
             />
-          )}{" "}
+          )}
           <HoverInfo size="-100px" text={"dark mode"} />
         </button>
       </div>
-      <div onClick={toggleDropDown} className="relative">
+      <div onClick={openDropDown} className="relative">
         <button className="relative user-avatar">
-          <Avatar size={"sm"} /> <HoverInfo size="-120px" text={"User menu"} />
+          <Avatar image={user?.image || ""} size={"sm"} />{" "}
+          <HoverInfo size="-120px" text={"User menu"} />
         </button>
-        {dropDown && <DropDown menu={dropDownMenu} />}
+        {dropdown && <DropDown menu={dropDownMenu} />}
       </div>
     </div>
   );
