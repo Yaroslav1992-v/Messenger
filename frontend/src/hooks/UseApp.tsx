@@ -13,12 +13,14 @@ import { UserMinData } from "./../store/types";
 export interface AppContextValue {
   isDark: boolean;
   modal: boolean;
+  profile: boolean;
   dropdown: boolean;
   user: UserMinData | null;
   handleMode: () => void;
   openModal: () => void;
   closeModal: () => void;
   openDropDown: () => void;
+  toggleProfile: () => void;
   closeDropDown: () => void;
 }
 const AppContext = React.createContext<AppContextValue>({
@@ -26,6 +28,8 @@ const AppContext = React.createContext<AppContextValue>({
   isDark: false,
   modal: false,
   dropdown: false,
+  profile: false,
+  toggleProfile: () => {},
   handleMode: () => {},
   openModal: () => {},
   closeModal: () => {},
@@ -41,6 +45,10 @@ const AppLoader = () => {
   );
   const [dropdown, setDropDown] = useState<boolean>(false);
   const [modal, setModal] = useState<boolean>(false);
+  const [profile, setProfile] = useState<boolean>(false);
+  const toggleProfile = () => {
+    setProfile((prev) => !prev);
+  };
   const openModal = () => {
     setModal(true);
     closeDropDown();
@@ -48,7 +56,6 @@ const AppLoader = () => {
   const closeModal = () => {
     setModal(false);
   };
-
   const openDropDown = () => {
     setDropDown(true);
   };
@@ -75,6 +82,8 @@ const AppLoader = () => {
     modal,
     user,
     dropdown,
+    profile,
+    toggleProfile,
     handleMode,
     openDropDown,
     closeDropDown,

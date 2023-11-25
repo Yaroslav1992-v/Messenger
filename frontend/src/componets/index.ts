@@ -9,3 +9,5 @@ export * from "./Avatar";
 export * from "./Dropdown/Dropdown";
 export * from "./EditModal/EditProfileModal";
 export * from "./Form/EditForm";
+export * from "./Profile/Profile";
+export * from "./Title";

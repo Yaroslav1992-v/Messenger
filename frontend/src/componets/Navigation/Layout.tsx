@@ -9,9 +9,10 @@ import { useSelector } from "react-redux";
 import { getAuthError, getAuthSuccess } from "../../store/auth";
 import { showToastMessage } from "../../utils/toast";
 import { ToastContainer } from "react-toastify";
+import { Profile } from "../index";
 
 export const Layout = () => {
-  const { isDark, modal, closeDropDown } = useApp();
+  const { isDark, modal, closeDropDown, user, profile } = useApp();
   const authError = useSelector(getAuthError());
   const authSuccess = useSelector(getAuthSuccess());
   useEffect(() => {
@@ -44,6 +45,7 @@ export const Layout = () => {
         <NavBottom />
       </nav>
       {modal && <EditProfileModal />}
+      {user && profile && <Profile userId={user?._id} />}
       <ToastContainer />
     </div>
   );

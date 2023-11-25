@@ -17,3 +17,8 @@ export interface DropDownProps {
   action: () => void;
   last?: boolean;
 }
+export interface TitleProps {
+  text: string;
+  className: string;
+  hType: "h1" | "h2" | "h3" | "h4";
+}

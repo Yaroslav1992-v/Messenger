@@ -7,16 +7,23 @@ import { useApp } from "../../hooks/UseApp";
 import { DropDown, Avatar } from "../index";
 
 const NavBottom = () => {
-  const { handleMode, isDark, openModal, openDropDown, dropdown, user } =
-    useApp();
+  const {
+    handleMode,
+    isDark,
+    openModal,
+    openDropDown,
+    dropdown,
+    user,
+    toggleProfile,
+  } = useApp();
   const dropDownMenu = [
     {
       name: "Edit Profile",
       action: openModal,
     },
     {
-      name: "Settings",
-      action: () => {},
+      name: "Profile",
+      action: toggleProfile,
     },
     {
       name: "Logout",
