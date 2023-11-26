@@ -22,3 +22,11 @@ svg {
 .menu>li:hover>.info-item, .nav-bottom-btn>button:hover>.info-item, .user-avatar:hover>.info-item {
   opacity: 0.5;
 }
+
+.user-item:hover>div>.actions {
+  opacity: 1;
+}
+
+.user-item:hover>div>.dropD {
+  display: block;
+}

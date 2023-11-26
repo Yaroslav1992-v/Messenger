@@ -121,6 +121,13 @@ export const EditForm: React.FC<{ tab: Tab; user: UserData }> = ({
               onChange={handleChange}
             />
             <InputField
+              label="Profession"
+              name="profession"
+              placeholder="Your Profession"
+              value={data?.profession || ""}
+              onChange={handleChange}
+            />
+            <InputField
               label="Website"
               name="website"
               placeholder="https://"

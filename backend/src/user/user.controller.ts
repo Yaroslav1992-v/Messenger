@@ -26,6 +26,18 @@ export class UserController {
   async findMinUserById(@Param('id') id: string) {
     return this.userService.findOneById(id);
   }
+  @Get('searchUser/:name')
+  @UseGuards(AuthGuard)
+  async searchByName(@Param('name') name: string) {
+    try {
+      return this.userService.findUsersByName(name);
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw new NotFoundException(error.message);
+      }
+      throw error;
+    }
+  }
   @UsePipes(new ValidationPipe())
   @Patch('edit')
   @UseGuards(AuthGuard)

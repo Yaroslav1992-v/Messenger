@@ -8,30 +8,38 @@ import { ProfileData } from "./ProfileData";
 import { ProfileSocial } from "./ProfileSocial";
 import { useApp } from "../../hooks/UseApp";
 import clsx from "clsx";
+import { getUserData, loadUser } from "../../store/user";
 
-export const Profile: React.FC<{ userId: string }> = ({ userId }) => {
+export const Profile = () => {
   const user = useSelector(getCurrentUser());
+  const { isDark, profileId } = useApp();
+  const userData = useSelector(getUserData());
   const dispatch = useAppDispatch();
   useEffect(() => {
-    if (!user || (user && !("social" in user))) {
+    if (!user || (user && !("social" in user) && user._id === profileId)) {
       dispatch(loadCurrentUser(false));
     }
-  }, [user]);
-  const { isDark } = useApp();
+    if (profileId !== user?._id) {
+      dispatch(loadUser(profileId));
+    }
+  }, [user, profileId]);
+
+  const profile =
+    profileId !== user?._id ? userData : "social" in user ? user : null;
   return (
     <div
       className={clsx(
         "absolute right-0 top-0 p-7 max-w-ds",
-        "w-full border-l border-b  ",
+        "w-full border-l border-b overflow-y-scroll h-full ",
         isDark ? "border-gray-700" : "border-gray-200"
       )}
     >
       <ProfileHeader />
-      {user && "social" in user && (
+      {profile && (
         <>
-          <ProfileInfo user={user} />
-          <ProfileData user={user} />
-          <ProfileSocial social={user.social || []} />
+          <ProfileInfo user={profile} />
+          <ProfileData user={profile} />
+          <ProfileSocial social={profile.social || []} />
         </>
       )}
     </div>

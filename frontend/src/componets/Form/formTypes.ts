@@ -39,3 +39,7 @@ export interface SocialInputProps {
   name: string;
   onChange: (e: TextFieldChange) => void;
 }
+export interface SearchFieldProps {
+  search: (e: TextFieldChange) => void;
+  value: string;
+}

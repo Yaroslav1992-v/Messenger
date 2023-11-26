@@ -11,6 +11,7 @@ import { getCurrentUser, getIsLoggedIn, loadCurrentUser } from "../store/auth";
 import { UserMinData } from "./../store/types";
 
 export interface AppContextValue {
+  profileId: string;
   isDark: boolean;
   modal: boolean;
   profile: boolean;
@@ -20,16 +21,19 @@ export interface AppContextValue {
   openModal: () => void;
   closeModal: () => void;
   openDropDown: () => void;
-  toggleProfile: () => void;
+  openProfile: (userId?: string) => void;
+  closeProfile: () => void;
   closeDropDown: () => void;
 }
 const AppContext = React.createContext<AppContextValue>({
+  profileId: "",
   user: null,
   isDark: false,
   modal: false,
   dropdown: false,
   profile: false,
-  toggleProfile: () => {},
+  closeProfile: () => {},
+  openProfile: () => {},
   handleMode: () => {},
   openModal: () => {},
   closeModal: () => {},
@@ -46,8 +50,15 @@ const AppLoader = () => {
   const [dropdown, setDropDown] = useState<boolean>(false);
   const [modal, setModal] = useState<boolean>(false);
   const [profile, setProfile] = useState<boolean>(false);
-  const toggleProfile = () => {
-    setProfile((prev) => !prev);
+  const [profileId, setProfileId] = useState<string>("");
+  const openProfile = (userId?: string) => {
+    setProfile(true);
+    if (userId) {
+      setProfileId(userId);
+    }
+  };
+  const closeProfile = () => {
+    setProfile(false);
   };
   const openModal = () => {
     setModal(true);
@@ -80,13 +91,15 @@ const AppLoader = () => {
   const contextValue: AppContextValue = {
     isDark: mode === "dark",
     modal,
+    profileId,
     user,
     dropdown,
     profile,
-    toggleProfile,
+    openProfile,
     handleMode,
     openDropDown,
     closeDropDown,
+    closeProfile,
     openModal,
     closeModal,
   };

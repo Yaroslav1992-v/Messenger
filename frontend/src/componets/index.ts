@@ -11,3 +11,6 @@ export * from "./EditModal/EditProfileModal";
 export * from "./Form/EditForm";
 export * from "./Profile/Profile";
 export * from "./Title";
+export * from "./Form/SearchField";
+export * from "./CloseBtn";
+export * from "./DotsBtn";

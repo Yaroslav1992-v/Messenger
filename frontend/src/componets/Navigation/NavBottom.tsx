@@ -6,7 +6,7 @@ import { black, white } from "../../colors/colors";
 import { useApp } from "../../hooks/UseApp";
 import { DropDown, Avatar } from "../index";
 
-const NavBottom = () => {
+const NavBottom: React.FC<{ userId: string }> = ({ userId }) => {
   const {
     handleMode,
     isDark,
@@ -14,7 +14,7 @@ const NavBottom = () => {
     openDropDown,
     dropdown,
     user,
-    toggleProfile,
+    openProfile,
   } = useApp();
   const dropDownMenu = [
     {
@@ -23,7 +23,7 @@ const NavBottom = () => {
     },
     {
       name: "Profile",
-      action: toggleProfile,
+      action: () => openProfile(userId),
     },
     {
       name: "Logout",

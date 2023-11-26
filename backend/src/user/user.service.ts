@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User, UserData } from './model/user.model';
-import { EditDto } from './dto/user.dto';
+import { EditDto, UserMin } from './dto/user.dto';
 
 @Injectable()
 export class UserService {
@@ -18,6 +18,25 @@ export class UserService {
       throw new NotFoundException(`User with ID ${{ id }} not found`);
     }
     return user;
+  }
+  async findUsersByName(name: string): Promise<UserMin[]> {
+    let regexString = '^';
+    for (let i = 0; i < name.length; i++) {
+      regexString += `${name[i]}`;
+      if (i < name.length - 1) {
+        regexString += '.*';
+      }
+    }
+
+    const regex = new RegExp(`${regexString}`, 'i');
+    const users: UserMin[] = await this.userModel
+      .find({ username: { $regex: regex } })
+      .limit(10)
+      .select('username _id image profession');
+    if (!users) {
+      throw new NotFoundException(`Users with name  ${name} are not founds`);
+    }
+    return users;
   }
   async editUser(data: EditDto) {
     const existingUser = await this.userModel.findOne({ email: data.email });

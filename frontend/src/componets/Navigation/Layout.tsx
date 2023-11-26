@@ -11,7 +11,7 @@ import { showToastMessage } from "../../utils/toast";
 import { ToastContainer } from "react-toastify";
 import { Profile } from "../index";
 
-export const Layout = () => {
+export const Layout: React.FC<{ children: JSX.Element }> = ({ children }) => {
   const { isDark, modal, closeDropDown, user, profile } = useApp();
   const authError = useSelector(getAuthError());
   const authSuccess = useSelector(getAuthSuccess());
@@ -26,26 +26,31 @@ export const Layout = () => {
   return (
     <div
       onClick={closeDropDown}
-      className={clsx(`layout h-screen    w-full `, isDark && "bg-primary")}
+      className={clsx(
+        `layout h-screen flex    w-full `,
+        isDark && "bg-primary"
+      )}
     >
-      <div
-        className={clsx(
-          "absolute inset-y-0 inset-x-0 bg-black ",
-          modal ? "opacity-70 z-10" : "opacity-0 z-0 "
-        )}
-      ></div>
+      {modal && (
+        <div
+          className={clsx(
+            "absolute inset-y-0 inset-x-0 bg-black z-10 opacity-70"
+          )}
+        ></div>
+      )}
       <nav
         className={clsx(
-          "menu z-20 flex flex-col items-center max-w-[100px] py-6 w-full h-full border-r",
+          "menu  flex flex-col items-center max-w-[100px] py-6 w-full h-full border-r",
           isDark ? "border-gray-700" : "border-gray-200"
         )}
       >
         <Logo size="sm" />
         <Menu />
-        <NavBottom />
+        {user && <NavBottom userId={user?._id} />}
       </nav>
       {modal && <EditProfileModal />}
-      {user && profile && <Profile userId={user?._id} />}
+      {user && profile && <Profile />}
+      {children}
       <ToastContainer />
     </div>
   );

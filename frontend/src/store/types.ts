@@ -8,6 +8,7 @@ export interface UserData extends Omit<RegisterData, "password"> {
   about?: string;
   website?: string;
   social?: Social[];
+  profession?: string;
   accessToken: string;
   refreshToken: string;
 }
@@ -19,4 +20,5 @@ export interface UserMinData {
   username: string;
   image?: string;
   _id: string;
+  profession?: string;
 }

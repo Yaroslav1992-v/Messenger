@@ -8,6 +8,9 @@ export const ProfileData: React.FC<{ user: UserData }> = ({ user }) => {
       {user.about && <ProfieTab name="About" value={user.about} />}
       {user.phone && <ProfieTab name="Phone" value={user.phone} />}
       {user.city && <ProfieTab name="City" value={user.city} />}
+      {user.profession && (
+        <ProfieTab name="Profession" value={user.profession} />
+      )}
       {user.website && <ProfieTab name="website" value={user.website} />}
     </div>
   );

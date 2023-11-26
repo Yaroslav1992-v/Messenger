@@ -27,3 +27,8 @@ export class EditDto {
   social: Social[];
   _id: Types.ObjectId;
 }
+export interface UserMin {
+  username: string;
+  image?: string;
+  _id: Types.ObjectId;
+}

@@ -10,6 +10,7 @@ export const userSchema = new Schema(
     city: { type: String },
     phone: { type: String },
     website: { type: String },
+    profession: { type: String },
     about: { type: String },
     social: [{ type: Object }],
   },
@@ -25,6 +26,7 @@ export interface User {
   phone?: string;
   website?: string;
   about?: string;
+  profession?: string;
   social: Social[];
 }
 export interface UserData extends User {

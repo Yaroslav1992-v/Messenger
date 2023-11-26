@@ -6,7 +6,7 @@ import { TitleProps } from "./componentTypes";
 export const Title: React.FC<TitleProps> = ({ className, hType, text }) => {
   const { isDark } = useApp();
   const style = clsx(
-    className,
+    className || "",
     "capitalize font-semibold",
     isDark && "text-white"
   );
@@ -18,6 +18,6 @@ export const Title: React.FC<TitleProps> = ({ className, hType, text }) => {
     case "h3":
       return <h3 className={style}>{text}</h3>;
     case "h4":
-      return <h4 className={style}>{text}</h4>;
+      return <h4 className={"text-lg mb-2 " + style}>{text}</h4>;
   }
 };
