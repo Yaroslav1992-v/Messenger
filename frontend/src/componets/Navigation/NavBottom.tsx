@@ -6,20 +6,24 @@ import { black, white } from "../../colors/colors";
 import { useApp } from "../../hooks/UseApp";
 import { DropDown, Avatar } from "../index";
 
-const NavBottom: React.FC<{ userId: string }> = ({ userId }) => {
-  const {
-    handleMode,
-    isDark,
-    openModal,
-    openDropDown,
-    dropdown,
-    user,
-    openProfile,
-  } = useApp();
+interface NavBottomProps {
+  userId: string;
+  dropdown: boolean;
+  openDropDown: () => void;
+  close: () => void;
+}
+const NavBottom: React.FC<NavBottomProps> = ({
+  userId,
+  dropdown,
+  openDropDown,
+  close,
+}) => {
+  const { handleMode, isDark, user, openProfile } = useApp();
+
   const dropDownMenu = [
     {
       name: "Edit Profile",
-      action: openModal,
+      action: () => close(),
     },
     {
       name: "Profile",
@@ -63,7 +67,11 @@ const NavBottom: React.FC<{ userId: string }> = ({ userId }) => {
           <Avatar image={user?.image || ""} size={"sm"} />{" "}
           <HoverInfo size="-120px" text={"User menu"} />
         </button>
-        {dropdown && <DropDown menu={dropDownMenu} />}
+        {dropdown && (
+          <div style={{ bottom: "70px" }} className="absolute">
+            <DropDown menu={dropDownMenu} />
+          </div>
+        )}
       </div>
     </div>
   );

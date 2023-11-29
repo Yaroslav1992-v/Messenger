@@ -43,3 +43,10 @@ export interface SearchFieldProps {
   search: (e: TextFieldChange) => void;
   value: string;
 }
+export interface AddImageFieldProps {
+  onChange: (e: TextFieldChange) => void;
+}
+export interface MessageFormProps {
+  chatId: string;
+  userId: string;
+}

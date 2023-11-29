@@ -19,7 +19,7 @@ svg {
   color: #4299e1 !important
 }
 
-.menu>li:hover>.info-item, .nav-bottom-btn>button:hover>.info-item, .user-avatar:hover>.info-item {
+.menu>li:hover>.info-item, .nav-bottom-btn>button:hover>.info-item, .user-avatar:hover>.info-item, .icon-btn:hover>.info-item {
   opacity: 0.5;
 }
 

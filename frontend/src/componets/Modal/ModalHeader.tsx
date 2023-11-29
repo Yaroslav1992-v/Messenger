@@ -1,12 +1,15 @@
 import { IoClose } from "react-icons/io5";
 import { MdOutlineModeEditOutline } from "react-icons/md";
 import { white } from "../../colors/colors";
-const EditHeader: React.FC<{ close: () => void }> = ({ close }) => {
+const ModalHeader: React.FC<{ close: () => void; title: string }> = ({
+  close,
+  title,
+}) => {
   return (
     <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600 bg-blue-500">
       <div className="flex items-center">
         <MdOutlineModeEditOutline className="mr-1" color={white} size={20} />
-        <h3 className="text-lg text-white font-semibold   ">Edit Profile</h3>
+        <h3 className="text-lg text-white font-semibold   ">{title}</h3>
       </div>
       <button
         onClick={close}
@@ -20,4 +23,4 @@ const EditHeader: React.FC<{ close: () => void }> = ({ close }) => {
   );
 };
 
-export default EditHeader;
+export default ModalHeader;

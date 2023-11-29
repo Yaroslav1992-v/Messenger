@@ -22,3 +22,32 @@ export interface UserMinData {
   _id: string;
   profession?: string;
 }
+export interface CreateChatData {
+  users: string[];
+  isGroup: boolean;
+  name?: string;
+}
+export interface Chat extends Omit<CreateChatData, "users"> {
+  _id: string;
+  users: UserMinData[];
+  lastMessageAt: Date;
+  lastMessage?: LastMessage;
+  createdAt: string;
+}
+export interface LastMessage {
+  text?: string;
+  image?: string;
+  isRead: string;
+}
+export interface CreateMessageData {
+  text?: string;
+  messageWithImage?: string;
+  image?: string;
+  chatId: string;
+  sender: string;
+}
+export interface Message extends Omit<CreateMessageData, "sender"> {
+  _id: string;
+  createdAt: Date;
+  sender: UserMinData;
+}

@@ -9,17 +9,17 @@ import Home from "../pages/Home/Home";
 import Users from "../pages/Users/Users";
 import { getCurrentUser, getIsLoggedIn, loadCurrentUser } from "../store/auth";
 import { UserMinData } from "./../store/types";
+import { loadChats } from "../store/chat";
 
 export interface AppContextValue {
   profileId: string;
   isDark: boolean;
-  modal: boolean;
   profile: boolean;
   dropdown: boolean;
   user: UserMinData | null;
   handleMode: () => void;
-  openModal: () => void;
-  closeModal: () => void;
+  handleChat: (id: string) => void;
+  activeChat: string;
   openDropDown: () => void;
   openProfile: (userId?: string) => void;
   closeProfile: () => void;
@@ -28,15 +28,14 @@ export interface AppContextValue {
 const AppContext = React.createContext<AppContextValue>({
   profileId: "",
   user: null,
+  activeChat: "",
   isDark: false,
-  modal: false,
   dropdown: false,
   profile: false,
   closeProfile: () => {},
+  handleChat: () => {},
   openProfile: () => {},
   handleMode: () => {},
-  openModal: () => {},
-  closeModal: () => {},
   openDropDown: () => {},
   closeDropDown: () => {},
 });
@@ -48,7 +47,10 @@ const AppLoader = () => {
     localStorageService.getMode() || "light"
   );
   const [dropdown, setDropDown] = useState<boolean>(false);
-  const [modal, setModal] = useState<boolean>(false);
+  const [activeChat, setActive] = useState<string>("");
+  const handleChat = (id: string) => {
+    setActive(id);
+  };
   const [profile, setProfile] = useState<boolean>(false);
   const [profileId, setProfileId] = useState<string>("");
   const openProfile = (userId?: string) => {
@@ -60,13 +62,7 @@ const AppLoader = () => {
   const closeProfile = () => {
     setProfile(false);
   };
-  const openModal = () => {
-    setModal(true);
-    closeDropDown();
-  };
-  const closeModal = () => {
-    setModal(false);
-  };
+
   const openDropDown = () => {
     setDropDown(true);
   };
@@ -85,23 +81,25 @@ const AppLoader = () => {
     if (isLoggedIn && !user) {
       dispatch(loadCurrentUser());
     }
-  }, [isLoggedIn]);
+    if (isLoggedIn && user) {
+      dispatch(loadChats(user._id));
+    }
+  }, [isLoggedIn, user]);
   const dispatch = useAppDispatch();
 
   const contextValue: AppContextValue = {
     isDark: mode === "dark",
-    modal,
     profileId,
     user,
     dropdown,
     profile,
+    activeChat,
+    handleChat,
     openProfile,
     handleMode,
     openDropDown,
     closeDropDown,
     closeProfile,
-    openModal,
-    closeModal,
   };
   return (
     <AppContext.Provider value={contextValue}>

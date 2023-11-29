@@ -1,60 +1,77 @@
 import clsx from "clsx";
-import { FiUser } from "react-icons/fi";
-import { IoChatbubbleOutline } from "react-icons/io5";
-import { Link, useLocation } from "react-router-dom";
 import { bluePrimary, black, white } from "../../colors/colors";
 import { HoverInfo } from "../HoverInfo";
 import { useApp } from "../../hooks/UseApp";
+import { Logo } from "../Logo";
+import NavBottom from "./NavBottom";
+import { useState } from "react";
+import { IconType } from "react-icons/lib";
+interface MenuProps {
+  menu: { to: () => void; active: boolean; name: string; Icon: IconType }[];
+  close: () => void;
+}
+const Menu: React.FC<MenuProps> = ({ menu, close }) => {
+  const { isDark, user } = useApp();
+  const [dropdown, setDropDown] = useState<boolean>(false);
+  const closeDropDown = () => {
+    if (dropdown) {
+      setDropDown(false);
+    }
+  };
+  const openDropDown = () => {
+    setDropDown(true);
+  };
 
-const Menu = () => {
-  const { pathname } = useLocation();
-  const { isDark } = useApp();
-  const menu = [
-    {
-      to: "/",
-      active: pathname === "/",
-      name: "chats",
-      Icon: IoChatbubbleOutline,
-    },
-    {
-      to: "/users",
-      active: pathname.includes("users"),
-      name: "users",
-      Icon: FiUser,
-    },
-  ];
   return (
-    <ul className="mt-5 p-5 menu mb-auto">
-      {menu.map((item, i) => (
-        <li className="flex relative mb-3" key={item.name + i}>
-          <Link
-            to={item.to}
-            className={clsx(
-              "p-5 rounded-lg",
-              item.active &&
-                (isDark ? "bg-blue-500  pointer-events-none" : "bg-gray-100"),
-              isDark && !item.active && " hover:bg-gray-700 ",
-              "transition duration-300"
-            )}
-          >
-            <item.Icon
-              size={25}
-              className={isDark ? "hover:text-white" : ""}
-              color={
-                item.active
-                  ? isDark
+    <nav
+      onClick={closeDropDown}
+      onMouseLeave={closeDropDown}
+      className={clsx(
+        "menu  flex flex-col items-center max-w-[100px] py-6 w-full h-full border-r",
+        isDark ? "border-gray-700" : "border-gray-200"
+      )}
+    >
+      <Logo size="sm" />
+      <ul className="mt-5 p-5 menu mb-auto">
+        {menu.map((item, i) => (
+          <li className="flex relative mb-3" key={item.name + i}>
+            <button
+              onClick={() => item.to()}
+              className={clsx(
+                "p-5 rounded-lg",
+                item.active &&
+                  (isDark ? "bg-blue-500  pointer-events-none" : "bg-gray-100"),
+                isDark && !item.active && " hover:bg-gray-700 ",
+                "transition duration-300"
+              )}
+            >
+              <item.Icon
+                size={25}
+                className={isDark ? "hover:text-white" : ""}
+                color={
+                  item.active
+                    ? isDark
+                      ? white
+                      : bluePrimary
+                    : isDark
                     ? white
-                    : bluePrimary
-                  : isDark
-                  ? white
-                  : black
-              }
-            />
-          </Link>
-          <HoverInfo size="-65px" text={item.name} />
-        </li>
-      ))}
-    </ul>
+                    : black
+                }
+              />
+            </button>
+            <HoverInfo size="-65px" text={item.name} />
+          </li>
+        ))}
+      </ul>
+      {user && (
+        <NavBottom
+          close={close}
+          dropdown={dropdown}
+          openDropDown={openDropDown}
+          userId={user?._id}
+        />
+      )}
+    </nav>
   );
 };
 

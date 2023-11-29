@@ -8,6 +8,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { getMongoConfig } from './config/mongo.config';
 import { JwtModule } from './jwt/jwt.module';
 import { FileModule } from './file/file.module';
+import { ChatModule } from './chat/chat.module';
+import { MessageModule } from './message/message.module';
 
 @Module({
   imports: [
@@ -21,6 +23,8 @@ import { FileModule } from './file/file.module';
     AuthModule,
     JwtModule,
     FileModule,
+    ChatModule,
+    MessageModule,
   ],
 
   controllers: [AppController],

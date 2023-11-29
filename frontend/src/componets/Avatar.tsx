@@ -7,7 +7,7 @@ export const Avatar: React.FC<AvatarProps> = ({ size, image }) => {
     <div className={clsx(`rounded-full bg-gray-400`, sizes)}>
       {image && (
         <img
-          className="w-full h-full rounded-full object-cover"
+          className="w-full h-full rounded-full object-contain"
           src={image}
           alt="user"
         />

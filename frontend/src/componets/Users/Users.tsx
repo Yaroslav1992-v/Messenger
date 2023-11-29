@@ -34,7 +34,7 @@ const Users = () => {
   return (
     <div
       className={clsx(
-        "py-6  w-ds w-full border-r",
+        "py-6  w-ds   border-r",
         isDark ? "border-gray-700" : "border-gray-200"
       )}
     >

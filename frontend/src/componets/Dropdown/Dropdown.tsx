@@ -8,7 +8,7 @@ export const DropDown: React.FC<{ menu: DropDownProps[] }> = ({ menu }) => {
     <div
       id="dropdown"
       className={clsx(
-        " absolute bottom-16 left-0  divide-y",
+        "divide-y",
         " divide-gray-100 rounded-lg shadow w-44",
         isDark ? "bg-gray-700 dark:bg-gray-700" : "bg-white"
       )}

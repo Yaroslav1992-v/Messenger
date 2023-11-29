@@ -1,5 +1,5 @@
 import Button from "../Button";
-import { Tab } from "../EditModal/types";
+import { Tab } from "../Modal/types";
 import { AboutTextArea } from "./AboutTextArea";
 import { AvatarField } from "./AvatarField";
 import { InputField } from "./InputField";

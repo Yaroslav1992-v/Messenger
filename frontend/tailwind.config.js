@@ -6,10 +6,13 @@ module.exports = {
       backgroundColor: {
         primary: "#1a2236",
       },
+      width: {
+        ds: "22rem",
+      },
       maxWidth: {
         ds: "22rem",
       },
     },
   },
-  plugins: [],
+  plugins: [require("tailwind-scrollbar")({ nocompatible: true })],
 };
