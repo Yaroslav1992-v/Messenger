@@ -33,6 +33,7 @@ export interface Chat extends Omit<CreateChatData, "users"> {
   lastMessageAt: Date;
   lastMessage?: LastMessage;
   createdAt: string;
+  updatedAt: Date;
 }
 export interface LastMessage {
   text?: string;
@@ -41,13 +42,13 @@ export interface LastMessage {
 }
 export interface CreateMessageData {
   text?: string;
-  messageWithImage?: string;
-  image?: string;
+  image?: File | string;
   chatId: string;
   sender: string;
 }
 export interface Message extends Omit<CreateMessageData, "sender"> {
   _id: string;
+  image?: string;
   createdAt: Date;
   sender: UserMinData;
 }

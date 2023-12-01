@@ -7,10 +7,10 @@ module.exports = {
         primary: "#1a2236",
       },
       width: {
-        ds: "22rem",
+        ds: "24rem",
       },
       maxWidth: {
-        ds: "22rem",
+        ds: "24rem",
       },
     },
   },

@@ -9,4 +9,5 @@ export interface ModalProps {
   modalName: string;
   children: ReactNode;
   close: () => void;
+  Icon: JSX.Element;
 }

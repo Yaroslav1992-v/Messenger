@@ -59,7 +59,11 @@ const Menu: React.FC<MenuProps> = ({ menu, close }) => {
                 }
               />
             </button>
-            <HoverInfo size="-65px" text={item.name} />
+
+            <HoverInfo
+              style={{ right: "-70px", top: "10px" }}
+              text={item.name}
+            />
           </li>
         ))}
       </ul>

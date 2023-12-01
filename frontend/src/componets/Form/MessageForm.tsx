@@ -1,53 +1,96 @@
-import React, { useRef, useState } from "react";
-import { AddImageField, EmojiBtn, MessageBtn } from "../index";
+import React, { useState } from "react";
+import { AddImageField, EmojiBtn, MessageBtn, Modal } from "../index";
 import { useApp } from "../../hooks/UseApp";
-import clsx from "clsx";
 import { MessageFormProps } from "./formTypes";
-import { FormSubmit } from "../../types";
+import { FormSubmit, TextAreaChange } from "../../types";
 import { CreateMessageData } from "../../store/types";
 import { useAppDispatch } from "../../store/createStore";
 import { createMessage } from "../../store/message";
-
+import { MessageArea } from "./MessageArea";
+import { MessageWithIMageForm } from "./MessageWithIMageForm";
+import { FaImage } from "react-icons/fa";
+import { white } from "../../colors/colors";
 export const MessageForm: React.FC<MessageFormProps> = ({ chatId, userId }) => {
   const { isDark } = useApp();
-  const messageRef = useRef<HTMLTextAreaElement>(null);
+
+  const [message, setMessage] = useState<string>("");
+  const handleChange = (e: TextAreaChange) => {
+    setMessage(e.target.value);
+  };
   const dispatch = useAppDispatch();
-  const handleImage = (e: React.ChangeEvent<HTMLInputElement>): void => {};
-  const handleSubmit = (e: FormSubmit) => {
+  const [image, setImage] = useState<File | undefined>();
+  const [modal, setModal] = useState<boolean>(false);
+  const closeModal = () => {
+    setModal(false);
+    setImage(undefined);
+  };
+  const [imagePreview, setImagePreview] = useState<string>("");
+  const [imageError, setImageError] = useState<string>();
+  const handleImage = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    const file = e.target.files![0];
+    if (!file) {
+      return;
+    }
+    if (file.size >= 3125576) {
+      setImageError("Max File Size is 3mb");
+      return;
+    }
+    const allowedExtensions = /(\.jpg|\.jpeg|\.png)$/i;
+    if (!allowedExtensions.exec(file.name)) {
+      setImageError(
+        "Invalid file type. Only JPG, JPEG, and PNG files are allowed."
+      );
+      return;
+    }
+    setImage(file);
+    setImagePreview(URL.createObjectURL(file));
+    setModal(true);
+    setImageError("");
+  };
+  const handleSubmit = async (e: FormSubmit) => {
     e.preventDefault();
-    if (messageRef.current?.value) {
-      const message: CreateMessageData = {
+    if (message || image) {
+      const newMessage: CreateMessageData = {
         sender: userId,
         chatId,
-        text: messageRef.current?.value,
+        text: message,
+        image: image,
       };
-      dispatch(createMessage(message));
+      const data = await dispatch(createMessage(newMessage));
+      if (data) {
+        setMessage("");
+        if (modal) {
+          setModal(false);
+        }
+      }
     }
   };
   return (
-    <form onSubmit={handleSubmit}>
-      <label htmlFor="chat" className="sr-only">
-        Your message
-      </label>
-
-      <div className="flex items-end px-3 py-2 rounded-lg  ">
-        <AddImageField onChange={handleImage} />
-        <EmojiBtn />
-        <div className="flex flex-col w-full">
-          <textarea
-            ref={messageRef}
-            id="chat"
-            className={clsx(
-              "block mx-4 p-2.5  text-sm   rounded-lg border",
-              isDark
-                ? "bg-primary border-gray-700 text-gray-300"
-                : "bg-white focus:outline-blue-500   text-gray-900 border-gray-200"
-            )}
-            placeholder="Your message..."
-          ></textarea>{" "}
+    <>
+      <form onSubmit={handleSubmit}>
+        <label htmlFor="chat" className="sr-only">
+          Your message
+        </label>
+        <div className="flex items-end px-3 py-2 rounded-lg  ">
+          <AddImageField onChange={handleImage} />
+          <EmojiBtn />
+          <MessageArea onChange={handleChange} value={message} />
+          <MessageBtn />
         </div>
-        <MessageBtn />
-      </div>
-    </form>
+        {modal && (
+          <Modal
+            Icon={<FaImage className="mr-1" color={white} size={20} />}
+            close={closeModal}
+            modalName="Send an Image"
+          >
+            <MessageWithIMageForm
+              image={imagePreview}
+              value={message}
+              onChange={handleChange}
+            />
+          </Modal>
+        )}
+      </form>
+    </>
   );
 };

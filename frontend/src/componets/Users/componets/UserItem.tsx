@@ -1,12 +1,6 @@
 import React, { useState } from "react";
 import { CreateChatData, UserMinData } from "../../../store/types";
-import {
-  Avatar,
-  Title,
-  DotsBtn,
-  DropDown,
-  UserPreview,
-} from "../../../componets/index";
+import { DotsBtn, DropDown, ItemPreview } from "../../../componets/index";
 import { useApp } from "../../../hooks/UseApp";
 import { useAppDispatch } from "../../../store/createStore";
 import { createChat } from "../../../store/chat";
@@ -46,11 +40,11 @@ export const UserItem: React.FC<{ user: UserMinData }> = ({ user }) => {
   ];
   return (
     <div onMouseLeave={closeDropDown} className="flex items-center relative  ">
-      <UserPreview text={user.username} image={user.image}>
+      <ItemPreview text={user.username} image={user.image}>
         {user.profession && (
           <span className="text-gray-400">{user.profession}</span>
         )}
-      </UserPreview>
+      </ItemPreview>
 
       <div className="actions opacity-0 transition duration-300  p-5 ease-in-out absolute right-0  z-30 ">
         <DotsBtn action={toggleDropDown} />

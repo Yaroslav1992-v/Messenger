@@ -34,7 +34,7 @@ export class ChatService {
       })
       .sort({ lastMessageAt: -1 })
       .populate('users', 'username _id image')
-      .populate('lastMessage', 'content isRead');
+      .populate('lastMessage', 'text image  isRead');
 
     return chats;
   }

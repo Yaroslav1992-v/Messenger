@@ -1,4 +1,4 @@
-import Button from "../Button";
+import Button from "../buttons/Button";
 import { Tab } from "../Modal/types";
 import { AboutTextArea } from "./AboutTextArea";
 import { AvatarField } from "./AvatarField";

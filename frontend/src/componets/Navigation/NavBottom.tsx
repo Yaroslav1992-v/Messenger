@@ -59,16 +59,18 @@ const NavBottom: React.FC<NavBottomProps> = ({
               color={isDark ? white : black}
             />
           )}
-          <HoverInfo size="-100px" text={"dark mode"} />
+
+          <HoverInfo style={{ left: "70px", top: "10px" }} text={"dark mode"} />
         </button>
       </div>
       <div onClick={openDropDown} className="relative">
         <button className="relative user-avatar">
-          <Avatar image={user?.image || ""} size={"sm"} />{" "}
-          <HoverInfo size="-120px" text={"User menu"} />
+          <Avatar image={user?.image || ""} size={"sm"} />
+
+          <HoverInfo style={{ left: "60px", top: "0" }} text={"User menu"} />
         </button>
         {dropdown && (
-          <div style={{ bottom: "70px" }} className="absolute">
+          <div style={{ bottom: "20px", left: " 50px" }} className="absolute">
             <DropDown menu={dropDownMenu} />
           </div>
         )}

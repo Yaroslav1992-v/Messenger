@@ -1,23 +1,22 @@
 import React from "react";
-import { UserMinData } from "../../../store/types";
-import { UserItem } from "./UserItem";
-import { useApp } from "../../../hooks/UseApp";
+import { Chat } from "../../../store/types";
+import { ChatItem } from "./ChatItem";
 import clsx from "clsx";
+import { useApp } from "../../../hooks/UseApp";
 
-export const UserList: React.FC<{ users: UserMinData[] }> = ({ users }) => {
+export const ChatList: React.FC<{ chats: Chat[] }> = ({ chats }) => {
   const { isDark } = useApp();
-
   return (
     <ul>
-      {users.map((u, i) => (
+      {chats.map((c) => (
         <li
           className={clsx(
             "mb-5 py-4 z-20  px-6 border-b  cursor-pointer user-item",
             isDark ? "border-gray-700" : "border-gray-200"
           )}
-          key={u.username + i}
+          key={c._id}
         >
-          <UserItem user={u} />
+          <ChatItem chat={c} />
         </li>
       ))}
     </ul>

@@ -1,9 +1,9 @@
 import React from "react";
-import { UserPreviewProps } from "./componentTypes";
+import { ItemPreviewProps } from "./componentTypes";
 import { Title } from "./Title";
 import { Avatar } from "./Avatar";
 
-export const UserPreview: React.FC<UserPreviewProps> = ({
+export const ItemPreview: React.FC<ItemPreviewProps> = ({
   text,
   children,
   image,

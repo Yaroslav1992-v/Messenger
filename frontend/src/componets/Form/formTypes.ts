@@ -50,3 +50,13 @@ export interface MessageFormProps {
   chatId: string;
   userId: string;
 }
+export interface MessageWithImageProps {
+  image: string;
+  onChange: (e: TextAreaChange) => void;
+  value: string;
+}
+export interface MessageAreaProps {
+  value: string;
+  onChange: (e: TextAreaChange) => void;
+  className?: string;
+}

@@ -7,9 +7,9 @@ export interface ButtonProps {
   disabled?: boolean;
 }
 export interface HoverInfoProps {
-  size: string;
   text: string;
   className?: string;
+  style: {};
 }
 export interface AvatarProps {
   size: "sm" | "large";
@@ -30,8 +30,9 @@ export interface IconBtnProps {
   action: () => void;
   isDark: boolean;
   name?: string;
+  hoverText?: string;
 }
-export interface UserPreviewProps {
+export interface ItemPreviewProps {
   text: string;
   image?: string;
   children?: ReactNode;

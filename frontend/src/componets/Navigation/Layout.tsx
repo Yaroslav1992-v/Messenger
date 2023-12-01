@@ -1,18 +1,17 @@
 import clsx from "clsx";
 import { useApp } from "../../hooks/UseApp";
-
 import Menu from "./Menu";
-import { Modal } from "../Modal/Modal";
+import { Modal, Users, Profile, Chats } from ".././index";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { getAuthError, getAuthSuccess } from "../../store/auth";
 import { showToastMessage } from "../../utils/toast";
 import { ToastContainer } from "react-toastify";
-import { Profile } from "../index";
 import { IoChatbubbleOutline } from "react-icons/io5";
 import { FiUser } from "react-icons/fi";
-import Users from "../Users/Users";
+import { MdOutlineModeEditOutline } from "react-icons/md";
 import { EditModal } from "../Modal/EditModal";
+import { white } from "../../colors/colors";
 export const Layout = () => {
   const { isDark, user, profile } = useApp();
   const [dropdown, setDropDown] = useState<boolean>(false);
@@ -57,9 +56,20 @@ export const Layout = () => {
       className={clsx(`flex  h-screen `, isDark && "bg-primary")}
     >
       <Menu close={toggleModal} menu={menu} />
-      {bar === "users" && <Users />}
+      {bar === "users" ? <Users /> : <Chats />}
+
       {modal && (
-        <Modal close={toggleModal} modalName="Edit Form">
+        <Modal
+          Icon={
+            <MdOutlineModeEditOutline
+              className="mr-1"
+              color={white}
+              size={20}
+            />
+          }
+          close={toggleModal}
+          modalName="Edit Form"
+        >
           <EditModal />
         </Modal>
       )}

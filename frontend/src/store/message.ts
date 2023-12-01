@@ -2,6 +2,7 @@ import { createAction, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AppDispatch } from "./createStore";
 import { CreateMessageData, Message } from "./types";
 import messageService from "../service/messageService";
+import fileService from "../service/fileService";
 
 interface MessagesState {
   isLoading: boolean;
@@ -25,6 +26,9 @@ export const messagesSlice = createSlice({
       state.messages = [];
       state.isLoading = true;
     },
+    messageCreateRequested: (state: MessagesState) => {
+      state.isLoading = true;
+    },
     messagesReceived: (
       state: MessagesState,
       action: PayloadAction<Message[]>
@@ -45,19 +49,25 @@ export const messagesSlice = createSlice({
     },
     messageCreated: (state: MessagesState, action: PayloadAction<Message>) => {
       state.messages.push(action.payload);
+      state.isLoading = false;
     },
   },
 });
 
-const createMessageAction = createAction("/createMessageRequested");
-
 export const createMessage =
   (message: CreateMessageData) => async (dispatch: AppDispatch) => {
     try {
-      dispatch(createMessageAction());
-      const newMessage = await messageService.createMessage(message);
+      let image;
+      dispatch(messageCreateRequested());
+      if (message.image && message.image instanceof File) {
+        image = await fileService.uploadFile(message.image);
+      }
+      const newMessage = await messageService.createMessage({
+        ...message,
+        image,
+      });
       dispatch(messageCreated(newMessage));
-      return newMessage;
+      return "Message Created";
     } catch (error: any) {
       const message = error.response?.data?.message || "Something went wrong";
       dispatch(messagesRequestFailed(message));
@@ -78,6 +88,8 @@ export const loadMessages =
 
 export const getMessages = () => (state: { messageStore: MessagesState }) =>
   state.messageStore.messages;
+export const getIsLoading = () => (state: { messageStore: MessagesState }) =>
+  state.messageStore.isLoading;
 export const getMessagesDataLoaded =
   () => (state: { messageStore: MessagesState }) =>
     state.messageStore.dataLoaded;
@@ -87,7 +99,7 @@ const {
   messagesRequested,
   messagesRequestFailed,
   messagesReceived,
-  messageReceived,
   messageCreated,
+  messageCreateRequested,
 } = actions;
 export default messageReducer;

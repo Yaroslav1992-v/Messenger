@@ -2,7 +2,7 @@ import { useState } from "react";
 import { AuthErrors, LoginData } from "./formTypes";
 import TextField from "./TextField";
 import { FormSubmit, TextFieldChange } from "../../types";
-import Button from "../Button";
+import Button from "../buttons/Button";
 import { useSelector } from "react-redux";
 import { getAuthLoading, signIn } from "../../store/auth";
 import { useAppDispatch } from "../../store/createStore";

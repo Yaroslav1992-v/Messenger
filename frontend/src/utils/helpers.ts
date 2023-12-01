@@ -70,3 +70,7 @@ export function formatDate(dateStr: Date): string {
     return `${day}.${month}.${year}`;
   }
 }
+export function cutString(text: string, num: number): string {
+  if (text.length > num) return text.slice(0, num) + "...";
+  else return text;
+}

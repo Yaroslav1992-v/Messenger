@@ -16,7 +16,7 @@ export const ChatBody: React.FC<ChatBodyProps> = ({
     }
   }, [chatId]);
   return (
-    <div className="flex h-full p-8 scrollbar scrollbar-thumb-gray-400 scrollbar-track-gray-200   overflow-y-scroll">
+    <div className="flex flex-col h-full p-8 scrollbar scrollbar-thumb-gray-400 scrollbar-track-gray-200 overflow-x-hidden   overflow-y-scroll">
       {messages.map((d, i) => (
         <div key={i} className="flex w-full flex-col">
           <div className="flex mx-auto p-1 rounded-md text-gray-100 bg-gray-400">
@@ -26,7 +26,9 @@ export const ChatBody: React.FC<ChatBodyProps> = ({
             {d.map((m) => (
               <li
                 key={m._id}
-                className={"mb-3 " + (userId === m.sender._id ? "ml-auto" : "")}
+                className={
+                  "mb-3 " + (userId === m.sender._id ? "ml-auto  " : "")
+                }
               >
                 {<Message message={m} userId={userId} />}
               </li>

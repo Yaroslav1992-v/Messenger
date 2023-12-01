@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { ChatHeaderProps } from "../chatProps";
-import { Title, Avatar, IconBtn, DropDown, UserPreview } from "../../index";
+import { IconBtn, DropDown, ItemPreview } from "../../index";
 import { useApp } from "../../../hooks/UseApp";
 import clsx from "clsx";
 import { IoIosCall } from "react-icons/io";
@@ -53,15 +53,16 @@ export const ChatHeader: React.FC<ChatHeaderProps> = ({ name, image, _id }) => {
         isDark ? "border-gray-700" : "border-gray-200"
       )}
     >
-      <UserPreview text={name} image={image}>
+      <ItemPreview text={name} image={image}>
         <span className="font-medium text-green-500">writing...</span>
-      </UserPreview>
+      </ItemPreview>
       <div className="flex relative">
         {actions.map((a, i) => (
           <IconBtn
             name={a.name || ""}
             isDark={isDark}
             key={i}
+            hoverText={a.name || ""}
             action={a.action}
             Icon={a.Icon}
           />

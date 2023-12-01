@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { AuthErrors, RegisterData } from "./formTypes";
 import TextField from "./TextField";
 import { TextFieldChange, FormSubmit } from "../../types";
-import Button from "../Button";
+import Button from "../buttons/Button";
 import { validator } from "../../utils/Validator/validator";
 import { registerValidator } from "../../utils/Validator/validatorConfig";
 import { useSelector } from "react-redux";

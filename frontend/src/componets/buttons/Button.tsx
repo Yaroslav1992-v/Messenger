@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { ButtonProps } from "./componentTypes";
+import { ButtonProps } from "../componentTypes";
 
 const Button: React.FC<ButtonProps> = ({ text, type = "button", disabled }) => {
   return (

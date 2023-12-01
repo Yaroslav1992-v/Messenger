@@ -6,7 +6,6 @@ import { useAppDispatch } from "../store/createStore";
 import React from "react";
 import localStorageService from "../service/localStorageService";
 import Home from "../pages/Home/Home";
-import Users from "../pages/Users/Users";
 import { getCurrentUser, getIsLoggedIn, loadCurrentUser } from "../store/auth";
 import { UserMinData } from "./../store/types";
 import { loadChats } from "../store/chat";
@@ -105,7 +104,6 @@ const AppLoader = () => {
     <AppContext.Provider value={contextValue}>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/users" element={<Users />} />
       </Routes>
     </AppContext.Provider>
   );

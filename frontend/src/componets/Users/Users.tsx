@@ -10,7 +10,7 @@ import { UserList } from "./componets/UserList";
 import { useApp } from "../../hooks/UseApp";
 import clsx from "clsx";
 
-const Users = () => {
+export const Users = () => {
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [searchQueries, setSearchQueries] = useState<string[]>([]);
   const { isDark } = useApp();
@@ -48,5 +48,3 @@ const Users = () => {
     </div>
   );
 };
-
-export default Users;

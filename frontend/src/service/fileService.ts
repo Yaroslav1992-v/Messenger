@@ -7,7 +7,7 @@ const file: AxiosInstance = axios.create({
 });
 
 const fileService = {
-  uploadFile: async (image: File) => {
+  uploadFile: async (image: File): Promise<string> => {
     const data = new FormData();
     data.append("file", image);
     data.append("upload_preset", "fsj75ivt");
