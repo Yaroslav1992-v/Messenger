@@ -24,7 +24,7 @@ export const Layout = () => {
       setDropDown(false);
     }
   };
-  const [bar, setBar] = useState<"users" | "chats">("users");
+  const [bar, setBar] = useState<"users" | "chats">("chats");
   const menu = [
     {
       to: () => setBar("chats"),

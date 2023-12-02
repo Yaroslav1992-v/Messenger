@@ -1,3 +1,4 @@
+import clsx from "clsx";
 import { ErrorMsg } from "./ErrorMsg";
 import { InputFieldProps } from "./formTypes";
 
@@ -24,7 +25,13 @@ export const InputField: React.FC<InputFieldProps> = ({
           name={name}
           value={value}
           id={name}
-          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:outline-blue-500 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+          className={clsx(
+            "bg-gray-50 border   text-gray-900 text-sm rounded-lg",
+            " focus:outline-blue-500 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600",
+            " dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500",
+            " dark:focus:border-primary-500",
+            error ? "border-red-600 mb-2" : "border-gray-300"
+          )}
           placeholder={placeholder}
         />
       </div>

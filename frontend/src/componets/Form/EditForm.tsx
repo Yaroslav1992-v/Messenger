@@ -1,11 +1,9 @@
 import Button from "../buttons/Button";
-import { Tab } from "../Modal/types";
 import { AboutTextArea } from "./AboutTextArea";
 import { AvatarField } from "./AvatarField";
 import { InputField } from "./InputField";
 import { EditErrors } from "./formTypes";
 import { useEffect, useState } from "react";
-
 import { SocialInput } from "./SocialInput";
 import { FormSubmit, TextAreaChange, TextFieldChange } from "../../types";
 import { UserData } from "../../store/types";
@@ -16,7 +14,7 @@ import { useSelector } from "react-redux";
 import { Loader } from "../Loader";
 import { validator } from "../../utils/Validator/validator";
 import { editValidator } from "../../utils/Validator/validatorConfig";
-
+type Tab = "personal" | "about" | "social";
 export const EditForm: React.FC<{ tab: Tab; user: UserData }> = ({
   tab,
   user,
@@ -102,6 +100,7 @@ export const EditForm: React.FC<{ tab: Tab; user: UserData }> = ({
               onChange={handleChange}
             />
             <AvatarField
+              label="Avatar"
               error={imageError}
               onChange={handleImage}
               image={imagePreview || user.image || ""}

@@ -23,7 +23,11 @@ svg {
   opacity: 0.5;
 }
 
-.user-item:hover>div>div>.actions {
+.user:hover>.hover {
+  opacity: 1;
+}
+
+.user-item:hover>div>div>.actions, .user-item:hover>div>.actions {
   opacity: 1;
 }
 

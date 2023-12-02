@@ -49,3 +49,11 @@ export const loginValidator: ValidationConfig = {
     isRequired: { message: "Password is Required For Login " },
   },
 };
+export const groupChatValidator: ValidationConfig = {
+  name: {
+    isRequired: { message: "Group Name is Required  " },
+  },
+  users: {
+    length: { message: "Group must have at least 2 users  " },
+  },
+};

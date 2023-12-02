@@ -24,9 +24,9 @@ export interface UserMinData {
 }
 export interface CreateChatData {
   users: string[];
-  isGroup: boolean;
-  name?: string;
+  isGroup: false;
 }
+
 export interface Chat extends Omit<CreateChatData, "users"> {
   _id: string;
   users: UserMinData[];
@@ -34,6 +34,27 @@ export interface Chat extends Omit<CreateChatData, "users"> {
   lastMessage?: LastMessage;
   createdAt: string;
   updatedAt: Date;
+}
+export interface GroupChatCreateData {
+  isGroup: true;
+  name: string;
+  admin: string;
+  users: string[];
+  description?: string;
+  image?: string;
+}
+export interface GroupChat extends Omit<GroupChatCreateData, "users"> {
+  users: UserMinData[];
+  _id: string;
+  name: string;
+  admin: string;
+  lastMessageAt: Date;
+  lastMessage?: LastMessage;
+  createdAt: string;
+  updatedAt: Date;
+}
+export interface EditChatData extends GroupChatCreateData {
+  _id: string;
 }
 export interface LastMessage {
   text?: string;
@@ -52,3 +73,4 @@ export interface Message extends Omit<CreateMessageData, "sender"> {
   createdAt: Date;
   sender: UserMinData;
 }
+export type ChatOrGroupChat = Chat | GroupChat;

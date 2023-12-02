@@ -40,7 +40,11 @@ export const Users = () => {
     >
       <UserHeader />
       <div className="px-6">
-        <SearchField search={handleSearchQuery} value={searchQuery} />{" "}
+        <SearchField
+          placeholder="Search Users"
+          search={handleSearchQuery}
+          value={searchQuery}
+        />
       </div>
       <div className="pt-8">
         <UserList users={filteredUsers} />

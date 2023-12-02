@@ -12,7 +12,7 @@ export interface HoverInfoProps {
   style: {};
 }
 export interface AvatarProps {
-  size: "sm" | "large";
+  size: "xs" | "sm" | "large";
   image?: string;
 }
 export interface DropDownProps {

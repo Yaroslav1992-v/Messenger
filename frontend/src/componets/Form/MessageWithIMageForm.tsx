@@ -5,7 +5,6 @@ import { MessageArea } from "./MessageArea";
 import { EmojiBtn } from "../buttons/EmojiBtn";
 import { useSelector } from "react-redux";
 import { getIsLoading } from "../../store/message";
-import { Loader } from "../Loader";
 import { BounceLoader } from "react-spinners";
 import { bluePrimary } from "../../colors/colors";
 export const MessageWithIMageForm: React.FC<MessageWithImageProps> = ({

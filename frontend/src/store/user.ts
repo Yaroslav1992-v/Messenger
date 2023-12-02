@@ -67,8 +67,7 @@ export const userSlice = createSlice({
     },
   },
 });
-const followRequested = createAction("user/FollowRequested");
-const unfollowRequested = createAction("user/UnFollowRequested");
+
 // export const loadUserData =
 //   (userId: string) => async (dispatch: AppDispatch) => {
 //     try {

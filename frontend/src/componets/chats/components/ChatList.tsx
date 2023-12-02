@@ -1,10 +1,11 @@
 import React from "react";
-import { Chat } from "../../../store/types";
+
 import { ChatItem } from "./ChatItem";
 import clsx from "clsx";
 import { useApp } from "../../../hooks/UseApp";
+import { ChatOrGroupChat } from "../../../store/types";
 
-export const ChatList: React.FC<{ chats: Chat[] }> = ({ chats }) => {
+export const ChatList: React.FC<{ chats: ChatOrGroupChat[] }> = ({ chats }) => {
   const { isDark } = useApp();
   return (
     <ul>

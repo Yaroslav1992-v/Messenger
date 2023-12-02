@@ -4,7 +4,10 @@ export const chatSchema = new Schema(
   {
     lastMessageAt: { type: Date, default: Date.now() },
     name: { type: String },
-    IsGroup: { type: Boolean },
+    description: { type: String },
+    image: { type: String },
+    isGroup: { type: Boolean },
+    admin: { type: Types.ObjectId, ref: 'User' },
     users: [{ type: Types.ObjectId, ref: 'User' }],
     lastMessage: { type: Types.ObjectId, ref: 'Message' },
   },
@@ -15,6 +18,12 @@ export interface Chat {
   lastMessageAt?: Date;
   name?: string;
   isGroup: boolean;
+  admin?: Types.ObjectId;
   users: Types.ObjectId[];
+  image?: string;
   lastMessage?: string;
+  description?: string;
+}
+export interface EditedChat extends Chat {
+  _id: Types.ObjectId;
 }

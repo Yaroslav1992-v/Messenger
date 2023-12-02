@@ -1,9 +1,9 @@
 import { ReactNode } from "react";
 
-export type Tab = "personal" | "about" | "social";
-export interface EditTabsProps {
-  action: (tab: Tab) => void;
-  active: Tab;
+export interface TabsProps<T> {
+  action: (tab: T) => void;
+  active: T;
+  tabs: T[];
 }
 export interface ModalProps {
   modalName: string;

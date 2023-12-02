@@ -41,6 +41,10 @@ export function validator(data: Data, config: ValidationConfig) {
         statusValidate = data.length > config.value!;
         break;
       }
+      case "length": {
+        statusValidate = Number(data) < 2;
+        break;
+      }
       default:
         break;
     }

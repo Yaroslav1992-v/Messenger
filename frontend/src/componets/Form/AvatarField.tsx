@@ -7,16 +7,17 @@ export const AvatarField: React.FC<AvatarFieldProps> = ({
   image,
   onChange,
   error,
+  label,
 }) => {
   return (
     <div className="mb-2">
       <div className="flex items-end mb-2">
         <div className="mr-2">
           <label
-            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            className="block mb-2 text-sm font-medium text-gray-900 w-full whitespace-nowrap dark:text-white"
             htmlFor="file_input"
           >
-            Avatar
+            {label}
           </label>
           <Avatar image={image} size="sm" />
         </div>

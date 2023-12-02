@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Chat } from "../../../store/types";
+import React, { useRef, useState } from "react";
+import { ChatOrGroupChat } from "../../../store/types";
 import { ItemPreview } from "../../ItemPreview";
 import { useApp } from "../../../hooks/UseApp";
 import { DotsBtn } from "../../buttons/DotsBtn";
@@ -7,8 +7,13 @@ import { DropDown } from "../..";
 import { formatDate } from "../../../utils/helpers";
 import { cutString } from "./../../../utils/helpers";
 
-export const ChatItem: React.FC<{ chat: Chat }> = ({ chat }) => {
+export const ChatItem: React.FC<{ chat: ChatOrGroupChat }> = ({ chat }) => {
   const [dropDown, setDropDown] = useState<boolean>(false);
+  const divRef = useRef<HTMLDivElement>(null);
+
+  const handleClick = (e: any) => {
+    openChat();
+  };
   const { openProfile, user: currentUser, handleChat } = useApp();
   const closeDropDown = () => {
     if (dropDown) {
@@ -19,6 +24,7 @@ export const ChatItem: React.FC<{ chat: Chat }> = ({ chat }) => {
     setDropDown((prev) => !prev);
   };
   const user = chat.users.find((u) => u._id !== currentUser?._id);
+
   const openChat = () => {
     handleChat(chat._id);
   };
@@ -44,40 +50,42 @@ export const ChatItem: React.FC<{ chat: Chat }> = ({ chat }) => {
   ];
 
   return (
-    <div
-      onMouseLeave={closeDropDown}
-      className="flex items-center relative justify-between  "
-    >
+    <div className="flex items-center relative justify-between   ">
       {user && (
-        <ItemPreview text={user.username} image={user.image}>
-          {chat.lastMessage && (
-            <div className="text-gray-400">
-              {chat.lastMessage.image ? (
-                <div className="h-8 w-8 rounded-md">
-                  <img
-                    className="w-full h-full rounded-md"
-                    src={chat.lastMessage.image}
-                    alt="message"
-                  />
-                </div>
-              ) : (
-                <p>{cutString(chat.lastMessage.text || "", 150)}</p>
-              )}
-            </div>
-          )}
-        </ItemPreview>
+        <div ref={divRef} onClick={handleClick} className="w-full">
+          <ItemPreview
+            text={chat.isGroup ? chat.name : user.username}
+            image={chat.isGroup ? chat.image : user.image}
+          >
+            {chat.lastMessage && (
+              <div onClick={handleClick} className="text-gray-400 ">
+                {chat.lastMessage.image ? (
+                  <div className="h-8 w-8 rounded-md">
+                    <img
+                      className="w-full h-full rounded-md"
+                      src={chat.lastMessage.image}
+                      alt="message"
+                    />
+                  </div>
+                ) : (
+                  <p>{cutString(chat.lastMessage.text || "", 150)}</p>
+                )}
+              </div>
+            )}
+          </ItemPreview>
+        </div>
       )}
       <div className="relative flex  mb-auto">
-        <span className="text-xs text-gray-400 font-thin">
+        <div className="text-xs text-gray-400 font-thin  whitespace-nowrap">
           {formatDate(chat.updatedAt)}
-        </span>
-        <div className="actions top-0  opacity-0  transition duration-300  p-5 ease-in-out absolute right-0  z-30 ">
+        </div>
+        <div className="actions top-0  opacity-0  transition duration-300  p-5 ease-in-out absolute right-0  z-10 ">
           <DotsBtn action={toggleDropDown} />
         </div>
       </div>
       {dropDown && (
         <div
-          className="absolute z-20 dropD hidden"
+          className="absolute z-40 dropD hidden"
           style={{ right: "-50px", top: "0" }}
         >
           <DropDown menu={dropDownMenu} />

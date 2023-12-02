@@ -1,4 +1,5 @@
-import { TextAreaChange, TextFieldChange } from "../../types";
+import { ChatOrGroupChat } from "../../store/types";
+import { FormSubmit, TextAreaChange, TextFieldChange } from "../../types";
 
 export interface LoginData {
   email: string;
@@ -30,6 +31,7 @@ export interface AvatarFieldProps {
   image: string;
   onChange: (e: TextFieldChange) => void;
   error?: string;
+  label: string;
 }
 export interface EditErrors extends Partial<RegisterData> {}
 export interface SocialInputProps {
@@ -42,6 +44,8 @@ export interface SocialInputProps {
 export interface SearchFieldProps {
   search: (e: TextFieldChange) => void;
   value: string;
+  placeholder: string;
+  error?: string;
 }
 export interface AddImageFieldProps {
   onChange: (e: TextFieldChange) => void;
@@ -59,4 +63,11 @@ export interface MessageAreaProps {
   value: string;
   onChange: (e: TextAreaChange) => void;
   className?: string;
+}
+export interface GroupErrors {
+  name?: string;
+  users?: string;
+}
+export interface GroupFormProps {
+  chat?: ChatOrGroupChat;
 }

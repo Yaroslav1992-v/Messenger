@@ -48,11 +48,11 @@ export const Chat = () => {
     return (
       <div className="w-full flex flex-col h-full">
         <ChatHeader
-          _id={user?._id || ""}
-          name={!chat.isGroup ? user?.username || "" : ""}
-          image={user?.image}
+          info={!chat.isGroup ? user._id : true}
+          name={!chat.isGroup ? user?.username : chat.name}
+          image={!chat.isGroup ? user?.image : chat.image}
         />
-        {currentUserId && groupedMessages.length > 0 && (
+        {currentUserId && (
           <ChatBody
             chatId={chat._id}
             messages={groupedMessages}

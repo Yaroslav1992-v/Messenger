@@ -1,8 +1,7 @@
 import clsx from "clsx";
-import { EditTabsProps, Tab } from "./types";
+import { TabsProps } from "./types";
 
-export const EditTabs: React.FC<EditTabsProps> = ({ action, active }) => {
-  const tabs: Tab[] = ["personal", "about", "social"];
+export const ModalTabs = <T,>({ action, active, tabs }: TabsProps<T>) => {
   return (
     <div className="mb-4 border-b border-gray-200 dark:border-gray-700">
       <ul
@@ -12,7 +11,11 @@ export const EditTabs: React.FC<EditTabsProps> = ({ action, active }) => {
         role="tablist"
       >
         {tabs.map((t, i) => (
-          <li key={t + i} className="me-2" role="presentation">
+          <li
+            key={typeof t === "string" ? t : i}
+            className="me-2"
+            role="presentation"
+          >
             <button
               className={clsx(
                 "inline-block p-4 border-b-2 rounded-t-lg capitalize",
@@ -26,7 +29,7 @@ export const EditTabs: React.FC<EditTabsProps> = ({ action, active }) => {
               aria-controls="profile"
               aria-selected="false"
             >
-              {t}
+              {typeof t === "string" && t}
             </button>
           </li>
         ))}

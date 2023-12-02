@@ -2,10 +2,9 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { getCurrentUser, loadCurrentUser } from "../../store/auth";
 import { useAppDispatch } from "../../store/createStore";
-import { Tab } from "./types";
 import { EditForm } from "../Form/EditForm";
 import { Loader } from "../Loader";
-import { EditTabs } from "./EditTabs";
+import { ModalTabs } from "./ModalTabs";
 
 export const EditModal = () => {
   const dispatch = useAppDispatch();
@@ -19,9 +18,11 @@ export const EditModal = () => {
   const handleTab = (tab: Tab) => {
     setActiveTab(tab);
   };
+  const tabs: Tab[] = ["personal", "about", "social"];
+  type Tab = "personal" | "about" | "social";
   return (
     <>
-      <EditTabs action={handleTab} active={activeTab} />;
+      <ModalTabs<Tab> tabs={tabs} action={handleTab} active={activeTab} />;
       {user && "social" in user ? (
         <EditForm tab={activeTab} user={user} />
       ) : (

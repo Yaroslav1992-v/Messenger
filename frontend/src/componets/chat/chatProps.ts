@@ -1,9 +1,9 @@
-import { Message, UserMinData } from "../../store/types";
+import { Message } from "../../store/types";
 
 export interface ChatHeaderProps {
   name: string;
   image?: string;
-  _id: string;
+  info: string | boolean;
 }
 export interface ChatBodyProps {
   messages: Message[][];
