@@ -1,6 +1,6 @@
 {
            
-    "apiEndPoint" :"http://localhost:3025/api"  ,
+    "apiEndPoint" :"http://localhost:3025"  ,
      "cloudinary" : "https://api.cloudinary.com/v1_1/demklciql/image",
     "cloudKey":"272747722316895",
       "cloudSecret":"5g5koejUIfsIH0jPCXdnU1xZk0w"

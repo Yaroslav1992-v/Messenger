@@ -34,7 +34,7 @@ export const Users = () => {
   return (
     <div
       className={clsx(
-        "py-6  w-ds   border-r",
+        "py-6  w-full  border-r ",
         isDark ? "border-gray-700" : "border-gray-200"
       )}
     >
@@ -46,7 +46,7 @@ export const Users = () => {
           value={searchQuery}
         />
       </div>
-      <div className="pt-8">
+      <div className="pt-8  scrollbar scrollbar-thumb-gray-400 h-fit scrollbar-track-gray-200 overflow-x-hidden   overflow-y-scroll   ">
         <UserList users={filteredUsers} />
       </div>
     </div>

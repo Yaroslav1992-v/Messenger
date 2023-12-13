@@ -3,8 +3,10 @@ import { Title, CloseBtn, IconBtn, Modal } from "../../index";
 import { MdOutlineGroup } from "react-icons/md";
 import { bluePrimary, white } from "../../../colors/colors";
 import { GroupModal } from "../../Modal/GroupModal";
+import { useApp } from "../../../hooks/UseApp";
 export const ChatsHeader: React.FC<{ isDark: boolean }> = ({ isDark }) => {
   const [modal, setModal] = useState<boolean>(false);
+  const { toggleMenu } = useApp();
   const toggleModal = () => {
     setModal((prev) => !prev);
   };
@@ -19,7 +21,9 @@ export const ChatsHeader: React.FC<{ isDark: boolean }> = ({ isDark }) => {
             Icon={<MdOutlineGroup size={25} color={bluePrimary} />}
             action={toggleModal}
           />
-          <CloseBtn action={() => {}} />
+          <div className="block lg:hidden">
+            <CloseBtn action={toggleMenu} />
+          </div>
         </div>
       </div>
       {modal && (

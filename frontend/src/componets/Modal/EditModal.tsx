@@ -22,7 +22,7 @@ export const EditModal = () => {
   type Tab = "personal" | "about" | "social";
   return (
     <>
-      <ModalTabs<Tab> tabs={tabs} action={handleTab} active={activeTab} />;
+      <ModalTabs<Tab> tabs={tabs} action={handleTab} active={activeTab} />
       {user && "social" in user ? (
         <EditForm tab={activeTab} user={user} />
       ) : (

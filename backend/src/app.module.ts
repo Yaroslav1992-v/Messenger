@@ -10,6 +10,7 @@ import { JwtModule } from './jwt/jwt.module';
 import { FileModule } from './file/file.module';
 import { ChatModule } from './chat/chat.module';
 import { MessageModule } from './message/message.module';
+import { SocketGateway } from './socket/socket.gateway';
 
 @Module({
   imports: [
@@ -28,6 +29,6 @@ import { MessageModule } from './message/message.module';
   ],
 
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, SocketGateway],
 })
 export class AppModule {}

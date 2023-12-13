@@ -4,14 +4,14 @@ import { HoverInfo } from "../HoverInfo";
 import { useApp } from "../../hooks/UseApp";
 import { Logo } from "../Logo";
 import NavBottom from "./NavBottom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { IconType } from "react-icons/lib";
 interface MenuProps {
   menu: { to: () => void; active: boolean; name: string; Icon: IconType }[];
   close: () => void;
 }
 const Menu: React.FC<MenuProps> = ({ menu, close }) => {
-  const { isDark, user } = useApp();
+  const { isDark, user, menuShow, bar } = useApp();
   const [dropdown, setDropDown] = useState<boolean>(false);
   const closeDropDown = () => {
     if (dropdown) {
@@ -21,14 +21,20 @@ const Menu: React.FC<MenuProps> = ({ menu, close }) => {
   const openDropDown = () => {
     setDropDown(true);
   };
+  useEffect(() => {
+    const width = window.innerWidth;
+    if (width) {
+    }
+  }, [menuShow]);
 
   return (
     <nav
       onClick={closeDropDown}
       onMouseLeave={closeDropDown}
       className={clsx(
-        "menu  flex flex-col items-center max-w-[100px] py-6 w-full h-full border-r",
-        isDark ? "border-gray-700" : "border-gray-200"
+        "menu lg:flex   flex-col items-center max-w-[100px] py-6 w-full h-full border-r  ",
+        isDark ? "border-gray-700 bg-primary" : "border-gray-200 bg-white",
+        !bar ? "flex" : "hidden"
       )}
     >
       <Logo size="sm" />

@@ -29,7 +29,7 @@ export const Profile = () => {
   return (
     <div
       className={clsx(
-        "absolute right-0 top-0 p-7  z-40  max-w-ds ",
+        "absolute right-0 top-0 p-7  z-40  max-w-full lg:max-w-ds ",
         "w-full border-l border-b overflow-y-scroll h-full ",
         isDark ? "border-gray-700 bg-primary" : "border-gray-200 bg-white"
       )}

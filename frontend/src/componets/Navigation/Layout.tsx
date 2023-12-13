@@ -2,7 +2,7 @@ import clsx from "clsx";
 import { useApp } from "../../hooks/UseApp";
 import Menu from "./Menu";
 import { Modal, Users, Profile, Chats } from ".././index";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { getAuthError, getAuthSuccess } from "../../store/auth";
 import { showToastMessage } from "../../utils/toast";
@@ -13,18 +13,24 @@ import { MdOutlineModeEditOutline } from "react-icons/md";
 import { EditModal } from "../Modal/EditModal";
 import { white } from "../../colors/colors";
 export const Layout = () => {
-  const { isDark, user, profile } = useApp();
+  const { isDark, user, profile, menuShow, bar, setBar, toggleMenu } = useApp();
   const [dropdown, setDropDown] = useState<boolean>(false);
   const [modal, setModal] = useState<boolean>(false);
+  const divRef = useRef(null);
   const toggleModal = () => {
     setModal((prev) => !prev);
   };
-  const closeDropDown = () => {
+  const closeDropDown = (e: any) => {
+    if (e.target === divRef.current) {
+      if (!bar) {
+        toggleMenu();
+      }
+    }
     if (dropdown) {
       setDropDown(false);
     }
   };
-  const [bar, setBar] = useState<"users" | "chats">("chats");
+
   const menu = [
     {
       to: () => setBar("chats"),
@@ -51,13 +57,28 @@ export const Layout = () => {
   }, [authError, authSuccess]);
 
   return (
-    <div
-      onClick={closeDropDown}
-      className={clsx(`flex  h-screen `, isDark && "bg-primary")}
-    >
-      <Menu close={toggleModal} menu={menu} />
-      {bar === "users" ? <Users /> : <Chats />}
+    <>
+      <div
+        ref={divRef}
+        onClick={closeDropDown}
+        className={clsx(
+          `z-20 transition duration-300 ease-in-out overflow-y-hidden flex    absolute top-0 bottom-0 lg:relative  h-screen lg:translate-x-[0] max-w-lg w-full  `,
+          isDark ? "bg-primary" : "bg-white",
+          menuShow
+            ? "translate-x-[0]  w-full max-w-full"
+            : "translate-x-[-1500px]",
+          !bar && "bg-opacity-40"
+        )}
+      >
+        {<Menu close={toggleModal} menu={menu} />}
+        {bar && (
+          <div className="w-full">
+            {bar === "users" ? <Users /> : bar === "chats" ? <Chats /> : ""}
+          </div>
+        )}
 
+        <ToastContainer />
+      </div>
       {modal && (
         <Modal
           Icon={
@@ -74,8 +95,6 @@ export const Layout = () => {
         </Modal>
       )}
       {user && profile && <Profile />}
-
-      <ToastContainer />
-    </div>
+    </>
   );
 };

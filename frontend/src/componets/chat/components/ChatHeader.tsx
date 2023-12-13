@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { ChatHeaderProps } from "../chatProps";
 import { IconBtn, DropDown, ItemPreview, Modal } from "../../index";
+import { GiHamburgerMenu } from "react-icons/gi";
 import { useApp } from "../../../hooks/UseApp";
 import clsx from "clsx";
 import { IoIosCall } from "react-icons/io";
@@ -14,7 +15,7 @@ export const ChatHeader: React.FC<ChatHeaderProps> = ({
   image,
   info,
 }) => {
-  const { openProfile } = useApp();
+  const { openProfile, toggleMenu } = useApp();
   const [dropDown, setDropDown] = useState<boolean>(false);
   const [modal, setModal] = useState<boolean>(false);
   const toggleModal = () => {
@@ -86,7 +87,7 @@ export const ChatHeader: React.FC<ChatHeaderProps> = ({
       <div
         onMouseLeave={closeDropDown}
         className={clsx(
-          "p-8 flex items-center   border-b w-full justify-between",
+          "p-8 flex flex-wrap items-center   z-10  border-b w-full justify-between",
           isDark ? "border-gray-700" : "border-gray-200"
         )}
       >
@@ -104,6 +105,14 @@ export const ChatHeader: React.FC<ChatHeaderProps> = ({
               Icon={a.Icon}
             />
           ))}
+          <div className="lg:hidden block">
+            <IconBtn
+              name="Bugrger Menu"
+              isDark={isDark}
+              action={toggleMenu}
+              Icon={<GiHamburgerMenu size={25} className="text-gray-600" />}
+            />
+          </div>
           <div
             style={{ top: "15px", right: "-25px" }}
             className="top-0 absolute"

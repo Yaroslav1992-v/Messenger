@@ -14,12 +14,8 @@ export const ChatItem: React.FC<{ chat: ChatOrGroupChat }> = ({ chat }) => {
   const handleClick = (e: any) => {
     openChat();
   };
-  const { openProfile, user: currentUser, handleChat } = useApp();
-  const closeDropDown = () => {
-    if (dropDown) {
-      setDropDown(false);
-    }
-  };
+  const { openProfile, user: currentUser, handleChat, toggleMenu } = useApp();
+
   const toggleDropDown = () => {
     setDropDown((prev) => !prev);
   };

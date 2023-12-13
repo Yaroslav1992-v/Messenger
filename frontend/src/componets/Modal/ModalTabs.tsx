@@ -1,9 +1,16 @@
 import clsx from "clsx";
 import { TabsProps } from "./types";
+import { useApp } from "../../hooks/UseApp";
 
 export const ModalTabs = <T,>({ action, active, tabs }: TabsProps<T>) => {
+  const { isDark } = useApp();
   return (
-    <div className="mb-4 border-b border-gray-200 dark:border-gray-700">
+    <div
+      className={clsx(
+        "border-b  ",
+        isDark ? "border-gray-700" : "border-gray-200"
+      )}
+    >
       <ul
         className="flex flex-wrap -mb-px text-sm font-medium text-center"
         id="default-tab"
@@ -13,13 +20,14 @@ export const ModalTabs = <T,>({ action, active, tabs }: TabsProps<T>) => {
         {tabs.map((t, i) => (
           <li
             key={typeof t === "string" ? t : i}
-            className="me-2"
+            className="mr-2"
             role="presentation"
           >
             <button
               className={clsx(
-                "inline-block p-4 border-b-2 rounded-t-lg capitalize",
-                active === t && "border-blue-500 text-blue-500"
+                "inline-block p-4 border-b  rounded-t-lg capitalize",
+                active === t && "border-blue-500 text-blue-500",
+                isDark && active !== t && "text-gray-200 border-gray-700 "
               )}
               id="profile-tab"
               data-tabs-target="#profile"

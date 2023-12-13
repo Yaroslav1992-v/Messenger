@@ -12,7 +12,7 @@ export const ChatList: React.FC<{ chats: ChatOrGroupChat[] }> = ({ chats }) => {
       {chats.map((c) => (
         <li
           className={clsx(
-            "mb-5 py-4 z-20  px-6 border-b  cursor-pointer user-item",
+            "  py-4 z-20  px-6 border-b  cursor-pointer user-item   not-last-child:mb-5",
             isDark ? "border-gray-700" : "border-gray-200"
           )}
           key={c._id}

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Chat as ChatData } from "../../store/types";
+
 import { ChatHeader } from "./components/ChatHeader";
 import { useSelector } from "react-redux";
 import { getCurrentUserId } from "../../store/auth";
@@ -11,25 +11,14 @@ import { useAppDispatch } from "../../store/createStore";
 import { getMessages, loadMessages } from "../../store/message";
 import { groupMessagesByDate } from "../../utils/helpers";
 import { getChat, getNewestChatId, loadChatById } from "../../store/chat";
-import { Modal } from "../Modal/Modal";
-import { EditModal } from "../Modal/EditModal";
 
 export const Chat = () => {
   const currentUserId = useSelector(getCurrentUserId());
-  const [modal, setModal] = useState();
-  const { isDark, activeChat, handleChat } = useApp();
+  const { isDark, activeChat, handleChat, socket } = useApp();
   const messages = useSelector(getMessages());
   const newestChatId = useSelector(getNewestChatId());
   const chat = useSelector(getChat());
   const dispatch = useAppDispatch();
-  useEffect(() => {
-    if (!activeChat && newestChatId) {
-      handleChat(newestChatId);
-    }
-    if (activeChat && activeChat !== chat?._id) {
-      dispatch(loadChatById(activeChat));
-    }
-  }, [activeChat, newestChatId]);
   useEffect(() => {
     if (activeChat) {
       dispatch(loadMessages(activeChat));
@@ -40,10 +29,11 @@ export const Chat = () => {
     if (activeChat && activeChat !== chat?._id) {
       dispatch(loadChatById(activeChat));
     }
-  }, [activeChat, chat?._id]);
+  }, [activeChat, newestChatId, chat?._id]);
 
   const user = chat ? chat.users.find((u) => u._id !== currentUserId) : null;
   const groupedMessages = groupMessagesByDate(messages);
+
   if (chat && user) {
     return (
       <div className="w-full flex flex-col h-full">
@@ -61,7 +51,7 @@ export const Chat = () => {
         )}
         <div
           className={clsx(
-            "pt-8 px-8 border-t",
+            "pt-2 px-2 border-t md:pt-3 md:px-8",
             isDark ? "border-gray-700" : "border-gray-200"
           )}
         >

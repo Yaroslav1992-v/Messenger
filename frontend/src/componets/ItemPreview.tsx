@@ -9,12 +9,12 @@ export const ItemPreview: React.FC<ItemPreviewProps> = ({
   image,
 }) => {
   return (
-    <div className="flex items-center   ">
-      <div className="mr-5">
+    <div className="flex items-center mb-3 md:mb-0">
+      <div className="mr-5 flex mb-auto">
         <Avatar size="sm" image={image} />
       </div>
       <div className="flex flex-col w-full justify-center mr-auto">
-        <Title text={text} hType="h4" className="mb-0 leading-3" />
+        <Title text={text} hType="h4" className="mb-0 leading-5" />
         {children && children}
       </div>
     </div>

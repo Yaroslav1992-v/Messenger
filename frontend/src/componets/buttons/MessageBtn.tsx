@@ -4,7 +4,7 @@ export const MessageBtn = () => {
   return (
     <button
       type="submit"
-      className="inline-flex justify-center p-2 text-blue-600 rounded-full cursor-pointer hover:bg-blue-100 dark:text-blue-500 dark:hover:bg-gray-600"
+      className="inline-flex md:ml-0 ml-auto justify-center p-2 text-blue-600 rounded-full cursor-pointer hover:bg-blue-100 dark:text-blue-500 dark:hover:bg-gray-600"
     >
       <svg
         className="w-5 h-5 rotate-90 rtl:-rotate-90"

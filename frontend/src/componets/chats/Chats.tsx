@@ -12,12 +12,12 @@ export const Chats = () => {
   return (
     <div
       className={clsx(
-        "py-6  w-ds   border-r",
-        isDark ? "border-gray-700" : "border-gray-200"
+        "py-6    w-full  border-r    ",
+        isDark ? "border-gray-700" : "border-gray-200  "
       )}
     >
       <ChatsHeader isDark={isDark} />
-      <div className="pt-8">
+      <div className="pt-8   z-20 h-screen   scrollbar scrollbar-thumb-gray-400 scrollbar-track-gray-200 overflow-x-hidden   overflow-y-scroll">
         <ChatList chats={chats} />
       </div>
     </div>

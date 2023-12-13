@@ -70,7 +70,10 @@ const NavBottom: React.FC<NavBottomProps> = ({
           <HoverInfo style={{ left: "60px", top: "0" }} text={"User menu"} />
         </button>
         {dropdown && (
-          <div style={{ bottom: "20px", left: " 50px" }} className="absolute">
+          <div
+            style={{ bottom: "20px", left: " 50px" }}
+            className="absolute z-30"
+          >
             <DropDown menu={dropDownMenu} />
           </div>
         )}

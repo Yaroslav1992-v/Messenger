@@ -71,11 +71,13 @@ export const MessageForm: React.FC<MessageFormProps> = ({ chatId, userId }) => {
         <label htmlFor="chat" className="sr-only">
           Your message
         </label>
-        <div className="flex items-end px-3 py-2 rounded-lg  ">
+        <div className="flex md:flex-nowrap flex-wrap items-end px-3   rounded-lg md:py-2 ">
           <AddImageField onChange={handleImage} />
           <EmojiBtn />
-          <MessageArea onChange={handleChange} value={message} />
-          <MessageBtn />
+          <div className="flex w-full items-center">
+            <MessageArea onChange={handleChange} value={message} />
+            <MessageBtn />
+          </div>
         </div>
         {modal && (
           <Modal
