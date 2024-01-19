@@ -12,6 +12,7 @@ export class ChatService {
   async createChat(data: Chat) {
     if (!data.isGroup) {
       const chat = await this.chatModel.findOne({
+        isGroup: false,
         users: {
           $all: [
             new Types.ObjectId(data.users[0]),
@@ -27,6 +28,7 @@ export class ChatService {
     const newChat = await (
       await this.chatModel.create(data)
     ).populate('users', 'username isGroup _id image');
+
     return newChat;
   }
   async getChatsByUserId(userId: string) {
@@ -44,7 +46,7 @@ export class ChatService {
     const chat = await this.chatModel
       .findOne({ _id: chatId })
       .populate('users', 'username _id image')
-      .populate('lastMessage', 'content isRead');
+      .populate('lastMessage', 'content notRead');
 
     return chat;
   }

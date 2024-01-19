@@ -66,6 +66,11 @@ export interface CreateMessageData {
   image?: File | string;
   chatId: string;
   sender: string;
+  notRead: string[];
+}
+export interface UndreadCount {
+  chatId: string;
+  count: number;
 }
 export interface Message extends Omit<CreateMessageData, "sender"> {
   _id: string;

@@ -11,30 +11,34 @@ export const ChatsHeader: React.FC<{ isDark: boolean }> = ({ isDark }) => {
     setModal((prev) => !prev);
   };
   return (
-    <div className="w-full mb-6 px-6">
-      <div className="flex justify-between w-full">
-        <Title hType="h2" text="chats" className="text-4xl" />
-        <div className="flex items-center">
-          <IconBtn
-            hoverText="New Group"
-            isDark={isDark}
-            Icon={<MdOutlineGroup size={25} color={bluePrimary} />}
-            action={toggleModal}
-          />
-          <div className="block lg:hidden">
-            <CloseBtn action={toggleMenu} />
+    <>
+      <div className="w-full mb-6 px-6">
+        <div className="flex justify-between w-full">
+          <Title hType="h2" text="chats" className="text-4xl" />
+          <div className="flex items-center">
+            <IconBtn
+              hoverText="New Group"
+              isDark={isDark}
+              Icon={<MdOutlineGroup size={25} color={bluePrimary} />}
+              action={toggleModal}
+            />
+            <div className="block lg:hidden">
+              <CloseBtn action={toggleMenu} />
+            </div>
           </div>
         </div>
       </div>
       {modal && (
-        <Modal
-          Icon={<MdOutlineGroup size={25} color={white} />}
-          modalName="New Group"
-          close={toggleModal}
-        >
-          <GroupModal />
-        </Modal>
+        <div className="absolute  inset-0  z-30">
+          <Modal
+            Icon={<MdOutlineGroup size={25} color={white} />}
+            modalName="New Group"
+            close={toggleModal}
+          >
+            <GroupModal />
+          </Modal>
+        </div>
       )}
-    </div>
+    </>
   );
 };

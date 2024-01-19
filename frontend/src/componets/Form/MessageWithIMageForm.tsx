@@ -1,16 +1,20 @@
 import React from "react";
 import { MessageWithImageProps } from "./formTypes";
 import { MessageArea } from "./MessageArea";
-
 import { EmojiBtn } from "../buttons/EmojiBtn";
 import { useSelector } from "react-redux";
 import { getIsLoading } from "../../store/message";
 import { BounceLoader } from "react-spinners";
 import { bluePrimary } from "../../colors/colors";
+import data from "@emoji-mart/data";
+import Picker from "@emoji-mart/react";
 export const MessageWithIMageForm: React.FC<MessageWithImageProps> = ({
   image,
   value,
   onChange,
+  openPicker,
+  handleEmoji,
+  picker,
 }) => {
   const isLoading = useSelector(getIsLoading());
   return (
@@ -22,12 +26,17 @@ export const MessageWithIMageForm: React.FC<MessageWithImageProps> = ({
           alt="Message img"
         />
       </div>
-      <div className="flex items-end mb-2  rounded-lg w-full ">
+      <div className="flex items-end mb-2  rounded-lg w-full relative">
+        {picker && (
+          <div className="absolute bottom-0">
+            <Picker data={data} onEmojiSelect={handleEmoji} />
+          </div>
+        )}
         {<MessageArea className="m-0" onChange={onChange} value={value} />}
       </div>
 
       <div className=" flex w-full justify-end items-center">
-        <EmojiBtn />
+        <EmojiBtn onClick={openPicker} />
         {isLoading ? (
           <BounceLoader color={bluePrimary} size={30} />
         ) : (

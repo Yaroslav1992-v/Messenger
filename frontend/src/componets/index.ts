@@ -23,3 +23,4 @@ export * from "./buttons/MessageBtn";
 export * from "./ItemPreview";
 export * from "./chats/Chats";
 export * from "./Users/Users";
+export * from "./Typing";

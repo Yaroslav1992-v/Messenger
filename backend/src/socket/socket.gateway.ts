@@ -9,6 +9,7 @@ import {
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
 import { Message } from 'src/message/model/message.model';
+import { User } from 'src/user/model/user.model';
 
 @WebSocketGateway({
   cors: {
@@ -29,7 +30,6 @@ export class SocketGateway implements OnGatewayConnection, OnGatewayDisconnect {
   }
   @SubscribeMessage('setup')
   setup(@MessageBody() id: string, @ConnectedSocket() client: Socket): void {
-    console.log('setup');
     client.join(id);
   }
   @SubscribeMessage('join')
@@ -43,10 +43,30 @@ export class SocketGateway implements OnGatewayConnection, OnGatewayDisconnect {
     @ConnectedSocket() client: Socket,
   ): void {
     const users = this.server.sockets.adapter.rooms.get(msg.chatId.toString());
-    if (users.size == 2) {
+    if (users.size > 1) {
       client.broadcast.to(msg.chatId.toString()).emit('new-message', msg);
     } else {
       client.emit('users-count', users.size);
     }
+  }
+  @SubscribeMessage('typing')
+  typing(
+    @MessageBody() data: { users: string[]; chatId: string; user: User },
+    @ConnectedSocket() client: Socket,
+  ): void {
+    data.users.forEach((u) =>
+      client.broadcast
+        .to(u)
+        .emit('typing', { chatId: data.chatId, user: data.user }),
+    );
+  }
+  @SubscribeMessage('stop-typing')
+  stopTyping(
+    @MessageBody() data: { users: string[]; chatId: string },
+    @ConnectedSocket() client: Socket,
+  ): void {
+    data.users.forEach((u) =>
+      client.broadcast.to(u).emit('stop-typing', data.chatId),
+    );
   }
 }

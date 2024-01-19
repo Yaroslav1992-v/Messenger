@@ -18,7 +18,7 @@ export const InputField: React.FC<InputFieldProps> = ({
         <label
           htmlFor={name}
           className={clsx(
-            "block  mb-2 text-sm font-medium text-gray-900 dark:text-white capitalize",
+            "block  mb-2 text-sm font-medium   dark:text-white capitalize",
             isDark ? "text-gray-200" : "text-gray-900"
           )}
         >

@@ -6,7 +6,12 @@ import { useAppDispatch } from "../store/createStore";
 import React from "react";
 import localStorageService from "../service/localStorageService";
 import Home from "../pages/Home/Home";
-import { getCurrentUser, getIsLoggedIn, loadCurrentUser } from "../store/auth";
+import {
+  getCurrentUser,
+  getIsLoggedIn,
+  loadCurrentUser,
+  logOut,
+} from "../store/auth";
 import { UserMinData } from "./../store/types";
 import { loadChats } from "../store/chat";
 import configFile from "../config.json";
@@ -29,6 +34,7 @@ export interface AppContextValue {
   openProfile: (userId?: string) => void;
   closeProfile: () => void;
   closeDropDown: () => void;
+  logginOut: () => void;
 }
 const AppContext = React.createContext<AppContextValue>({
   profileId: "",
@@ -48,6 +54,7 @@ const AppContext = React.createContext<AppContextValue>({
   handleMode: () => {},
   openDropDown: () => {},
   closeDropDown: () => {},
+  logginOut: () => {},
 });
 export const useApp = (): AppContextValue => {
   return useContext(AppContext);
@@ -63,6 +70,9 @@ const AppLoader = () => {
     if (menuShow) {
       setMenuShow(false);
     }
+  };
+  const logginOut = () => {
+    dispatch(logOut());
   };
   const [bar, setBar] = useState<"users" | "chats" | null>("chats");
   const [menuShow, setMenuShow] = useState<boolean>(false);
@@ -103,7 +113,6 @@ const AppLoader = () => {
     if (isLoggedIn && user) {
       dispatch(loadChats(user._id));
       socket = io(`${configFile.apiEndPoint}`);
-
       socket.emit("setup", user._id);
     }
   }, [isLoggedIn, user]);
@@ -120,6 +129,7 @@ const AppLoader = () => {
     menuShow,
     dropdown,
     profile,
+    logginOut,
     activeChat,
     handleChat,
     openProfile,

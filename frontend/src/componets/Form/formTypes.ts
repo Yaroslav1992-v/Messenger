@@ -51,13 +51,16 @@ export interface AddImageFieldProps {
   onChange: (e: TextFieldChange) => void;
 }
 export interface MessageFormProps {
-  chatId: string;
+  chat: ChatOrGroupChat;
   userId: string;
 }
 export interface MessageWithImageProps {
   image: string;
   onChange: (e: TextAreaChange) => void;
   value: string;
+  openPicker: () => void;
+  handleEmoji: (e: any) => void;
+  picker: boolean;
 }
 export interface MessageAreaProps {
   value: string;

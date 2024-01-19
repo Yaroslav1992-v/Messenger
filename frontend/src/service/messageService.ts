@@ -1,4 +1,4 @@
-import { CreateMessageData, Message } from "../store/types";
+import { CreateMessageData, Message, UndreadCount } from "../store/types";
 import httpService from "./httpService";
 
 const apiEndPoint = "/message/";
@@ -11,6 +11,16 @@ const messageService = {
     const { data } = await httpService.get(
       `${apiEndPoint}getMessages/${chatId}`
     );
+    return data;
+  },
+  editMessage: async (message: Message): Promise<Message> => {
+    const { data } = await httpService.patch(`${apiEndPoint}editMessage`, {
+      ...message,
+    });
+    return data;
+  },
+  countUnread: async (chatIds: string[]): Promise<UndreadCount[]> => {
+    const { data } = await httpService.post(`${apiEndPoint}count`, chatIds);
     return data;
   },
 };

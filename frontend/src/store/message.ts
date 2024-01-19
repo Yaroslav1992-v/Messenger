@@ -1,6 +1,6 @@
-import { createAction, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AppDispatch } from "./createStore";
-import { CreateMessageData, Message } from "./types";
+import { CreateMessageData, Message, UndreadCount } from "./types";
 import messageService from "../service/messageService";
 import fileService from "../service/fileService";
 
@@ -9,6 +9,7 @@ interface MessagesState {
   error: string | null;
   messages: Message[];
   dataLoaded: boolean;
+  unreadCount: UndreadCount[];
 }
 
 const messagesInitialState: MessagesState = {
@@ -16,6 +17,7 @@ const messagesInitialState: MessagesState = {
   error: null,
   messages: [],
   dataLoaded: false,
+  unreadCount: [],
 };
 
 export const messagesSlice = createSlice({
@@ -25,6 +27,19 @@ export const messagesSlice = createSlice({
     messagesRequested: (state: MessagesState) => {
       state.messages = [];
       state.isLoading = true;
+    },
+    messagesUpdateRequested: (state: MessagesState) => {
+      state.isLoading = true;
+    },
+    messagesUpdateSuccess: (
+      state: MessagesState,
+      action: PayloadAction<Message>
+    ) => {
+      const index = state.messages.findIndex(
+        (c) => c._id === action.payload._id
+      );
+      state.messages[index] = action.payload;
+      state.isLoading = false;
     },
     messageCreateRequested: (state: MessagesState) => {
       state.isLoading = true;
@@ -36,6 +51,18 @@ export const messagesSlice = createSlice({
       state.dataLoaded = true;
       state.messages = action.payload;
       state.isLoading = false;
+    },
+    unreadReceived: (
+      state: MessagesState,
+      action: PayloadAction<UndreadCount[]>
+    ) => {
+      state.unreadCount = action.payload;
+    },
+    unreadDecrease: (state: MessagesState, action: PayloadAction<Message>) => {
+      const index = state.unreadCount.findIndex(
+        (u) => u.chatId === action.payload.chatId
+      );
+      state.unreadCount[index].count = state.unreadCount[index].count - 1;
     },
     messageReceived: (state: MessagesState, action: PayloadAction<Message>) => {
       state.messages.push(action.payload);
@@ -67,7 +94,7 @@ export const createMessage =
         image,
       });
       dispatch(messageCreated(newMessage));
-      return "Message Created";
+      return newMessage;
     } catch (error: any) {
       const message = error.response?.data?.message || "Something went wrong";
       dispatch(messagesRequestFailed(message));
@@ -85,7 +112,38 @@ export const loadMessages =
       dispatch(messagesRequestFailed(message));
     }
   };
+export const updateMessage =
+  (message: Message, unread?: boolean) => async (dispatch: AppDispatch) => {
+    try {
+      dispatch(messagesUpdateRequested());
+      const updatedMessage = await messageService.editMessage(message);
+      console.log(updatedMessage);
+      dispatch(messagesUpdateSuccess(updatedMessage));
 
+      if (unread) {
+        dispatch(unreadDecrease(updatedMessage));
+      }
+      return updatedMessage;
+    } catch (error: any) {
+      const message = error.response?.data?.message || "Something went wrong";
+      dispatch(messagesRequestFailed(message));
+    }
+  };
+export const countUnread =
+  (chatIds: string[]) => async (dispatch: AppDispatch) => {
+    try {
+      const unread = await messageService.countUnread(chatIds);
+      dispatch(unreadReceived(unread));
+    } catch (error: any) {
+      const message = error.response?.data?.message || "Something went wrong";
+      dispatch(messagesRequestFailed(message));
+    }
+  };
+export const recivedMessage = (msg: Message) => (dispatch: AppDispatch) => {
+  dispatch(messageReceived(msg));
+};
+export const getUnread = () => (state: { messageStore: MessagesState }) =>
+  state.messageStore.unreadCount;
 export const getMessages = () => (state: { messageStore: MessagesState }) =>
   state.messageStore.messages;
 export const getIsLoading = () => (state: { messageStore: MessagesState }) =>
@@ -99,7 +157,12 @@ const {
   messagesRequested,
   messagesRequestFailed,
   messagesReceived,
+  messageReceived,
   messageCreated,
   messageCreateRequested,
+  messagesUpdateRequested,
+  messagesUpdateSuccess,
+  unreadReceived,
+  unreadDecrease,
 } = actions;
 export default messageReducer;

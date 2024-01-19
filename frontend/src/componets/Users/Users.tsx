@@ -34,7 +34,7 @@ export const Users = () => {
   return (
     <div
       className={clsx(
-        "py-6  w-full  border-r ",
+        "py-6  w-full h-full  border-r ",
         isDark ? "border-gray-700" : "border-gray-200"
       )}
     >
@@ -46,9 +46,11 @@ export const Users = () => {
           value={searchQuery}
         />
       </div>
-      <div className="pt-8  scrollbar scrollbar-thumb-gray-400 h-fit scrollbar-track-gray-200 overflow-x-hidden   overflow-y-scroll   ">
-        <UserList users={filteredUsers} />
-      </div>
+      {filteredUsers.length > 0 && (
+        <div className="pt-8  scrollbar scrollbar-w-1    scrollbar-thumb-gray-400 scrollbar-track-gray-200 overflow-x-hidden     overflow-auto  ">
+          <UserList users={filteredUsers} />
+        </div>
+      )}
     </div>
   );
 };

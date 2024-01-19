@@ -72,6 +72,7 @@ export const authSlice = createSlice({
       state.isLoading = false;
       state.isLoggedIn = true;
       state.authSuccess = action.payload[1].message;
+      state.error = null;
     },
     authRequestFailed: (
       state: AuthState,

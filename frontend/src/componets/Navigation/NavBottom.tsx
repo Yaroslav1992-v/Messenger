@@ -18,7 +18,7 @@ const NavBottom: React.FC<NavBottomProps> = ({
   openDropDown,
   close,
 }) => {
-  const { handleMode, isDark, user, openProfile } = useApp();
+  const { handleMode, isDark, user, openProfile, logginOut } = useApp();
 
   const dropDownMenu = [
     {
@@ -31,7 +31,7 @@ const NavBottom: React.FC<NavBottomProps> = ({
     },
     {
       name: "Logout",
-      action: () => {},
+      action: logginOut,
       last: true,
     },
   ];

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 
 import { ChatHeader } from "./components/ChatHeader";
 import { useSelector } from "react-redux";
@@ -8,10 +8,15 @@ import { ChatBody } from "./components/ChatBody";
 import { useApp } from "../../hooks/UseApp";
 import clsx from "clsx";
 import { useAppDispatch } from "../../store/createStore";
-import { getMessages, loadMessages } from "../../store/message";
+import { getMessages, loadMessages, recivedMessage } from "../../store/message";
 import { groupMessagesByDate } from "../../utils/helpers";
-import { getChat, getNewestChatId, loadChatById } from "../../store/chat";
-
+import {
+  getChat,
+  getNewestChatId,
+  loadChatById,
+  updateChat,
+} from "../../store/chat";
+import { Message } from "../../store/types";
 export const Chat = () => {
   const currentUserId = useSelector(getCurrentUserId());
   const { isDark, activeChat, handleChat, socket } = useApp();
@@ -20,6 +25,16 @@ export const Chat = () => {
   const chat = useSelector(getChat());
   const dispatch = useAppDispatch();
   useEffect(() => {
+    if (chat) {
+      socket.off("message");
+      socket.off("new-message");
+      socket.emit("join", chat._id);
+      socket.on("new-message", (newMessage: Message) => {
+        if (newMessage.chatId === chat._id) {
+          dispatch(recivedMessage(newMessage));
+        }
+      });
+    }
     if (activeChat) {
       dispatch(loadMessages(activeChat));
     }
@@ -38,6 +53,7 @@ export const Chat = () => {
     return (
       <div className="w-full flex flex-col h-full">
         <ChatHeader
+          chatId={chat._id}
           info={!chat.isGroup ? user._id : true}
           name={!chat.isGroup ? user?.username : chat.name}
           image={!chat.isGroup ? user?.image : chat.image}
@@ -55,9 +71,7 @@ export const Chat = () => {
             isDark ? "border-gray-700" : "border-gray-200"
           )}
         >
-          {currentUserId && (
-            <MessageForm chatId={chat._id} userId={currentUserId} />
-          )}
+          {currentUserId && <MessageForm chat={chat} userId={currentUserId} />}
         </div>
       </div>
     );

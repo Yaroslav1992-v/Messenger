@@ -52,9 +52,7 @@ export class ChatController {
   }
   @Patch('edit')
   @UseGuards(AuthGuard)
-  async editPost(@Body() data: EditedChat, @Req() req: AuthUser) {
-    console.log(req.user);
-    console.log(data);
+  async editChat(@Body() data: EditedChat, @Req() req: AuthUser) {
     try {
       if (req.user.id !== data.admin) {
         throw new NotFoundException('Unathorized');

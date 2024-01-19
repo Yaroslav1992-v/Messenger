@@ -7,6 +7,8 @@ import {
   EditChatData,
   GroupChat,
   GroupChatCreateData,
+  LastMessage,
+  Message,
 } from "./types";
 import chatService from "../service/chatService";
 import fileService from "../service/fileService";
@@ -71,6 +73,16 @@ export const chatsSlice = createSlice({
       state.chats.push(action.payload);
       state.isLoading = false;
     },
+    chatUpdate: (state: ChatsState, action: PayloadAction<Message>) => {
+      const index = state.chats.findIndex(
+        (c) => c._id === action.payload.chatId
+      );
+      const msg = {
+        image: action.payload.image,
+        text: action.payload.text,
+      };
+      state.chats[index].lastMessage = msg as LastMessage;
+    },
     chatEdited: (state: ChatsState, action: PayloadAction<ChatOrGroupChat>) => {
       const index = state.chats.findIndex((c) => c._id === action.payload._id);
       state.chats[index] = action.payload;
@@ -106,13 +118,16 @@ export const createChat =
 
       const newChat = await chatService.createChat(data);
       dispatch(chatCreated(newChat));
-      return "Chat Created";
+      console.log(newChat);
+      return newChat._id;
     } catch (error: any) {
       const message = error.response?.data?.message || "Something went wrong";
       dispatch(chatsRequestFailed(message));
     }
   };
-
+export const updateChat = (message: Message) => (dispatch: AppDispatch) => {
+  dispatch(chatUpdate(message));
+};
 export const loadChats = (userId: string) => async (dispatch: AppDispatch) => {
   try {
     dispatch(chatsRequested());
@@ -147,6 +162,7 @@ export const editChat =
       dispatch(chatsRequestFailed(message));
     }
   };
+
 export const loadChatById =
   (chatId: string) => async (dispatch: AppDispatch) => {
     try {
@@ -183,6 +199,7 @@ const {
   chatsReceived,
   chatCreated,
   chatEdited,
+  chatUpdate,
   chatActionRequest,
 } = actions;
 

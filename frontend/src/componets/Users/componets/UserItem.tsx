@@ -22,6 +22,7 @@ export const UserItem: React.FC<{ user: UserMinData }> = ({ user }) => {
         users: [currentUser?._id, user._id],
         isGroup: false,
       };
+
       const chatId = await dispatch(createChat(newChat));
       if (chatId) {
         handleChat(chatId);
