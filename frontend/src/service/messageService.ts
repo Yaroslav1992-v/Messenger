@@ -23,6 +23,12 @@ const messageService = {
     const { data } = await httpService.post(`${apiEndPoint}count`, chatIds);
     return data;
   },
+  deleteMessage: async (messageId: string): Promise<UndreadCount[]> => {
+    const { data } = await httpService.delete(
+      `${apiEndPoint}delete/${messageId}`
+    );
+    return data;
+  },
 };
 
 export default messageService;

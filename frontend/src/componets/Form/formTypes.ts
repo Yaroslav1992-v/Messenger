@@ -57,6 +57,7 @@ export interface MessageFormProps {
 export interface MessageWithImageProps {
   image: string;
   onChange: (e: TextAreaChange) => void;
+  changeImage: (e: TextFieldChange) => void;
   value: string;
   openPicker: () => void;
   handleEmoji: (e: any) => void;

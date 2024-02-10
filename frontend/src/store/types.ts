@@ -33,6 +33,7 @@ export interface Chat extends Omit<CreateChatData, "users"> {
   lastMessageAt: Date;
   lastMessage?: LastMessage;
   createdAt: string;
+  userThatLeft?: string;
   updatedAt: Date;
 }
 export interface GroupChatCreateData {

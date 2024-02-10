@@ -1,13 +1,18 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { MessageProps } from "../chatProps";
-import { ItemPreview } from "../../index";
+import { Confirm, ItemPreview } from "../../index";
 import { formatDate } from "../../../utils/helpers";
 import clsx from "clsx";
 import { Message as Msg } from "../../../store/types";
 import { useAppDispatch } from "../../../store/createStore";
-import { getIsLoading, updateMessage } from "../../../store/message";
-import { useSelector } from "react-redux";
+import {
+  deleteMessage,
+  getIsLoading,
+  updateMessage,
+} from "../../../store/message";
 
+import { useSelector } from "react-redux";
+import { MdDelete } from "react-icons/md";
 export const Message: React.FC<MessageProps> = ({
   message,
   userId,
@@ -17,6 +22,8 @@ export const Message: React.FC<MessageProps> = ({
   const messageRef = useRef<HTMLDivElement>(null);
   const dispatch = useAppDispatch();
   const isLoading = useSelector(getIsLoading());
+  const [action, setAction] = useState<boolean>(false);
+  const [confirm, setConfirm] = useState<boolean>(false);
   const handleScroll = () => {
     if (messageRef.current) {
       const rect = messageRef.current.getBoundingClientRect();
@@ -31,6 +38,9 @@ export const Message: React.FC<MessageProps> = ({
       }
     }
   };
+  const removeMessage = () => {
+    dispatch(deleteMessage(message));
+  };
   useEffect(() => {
     if (bodyRef.current) {
       bodyRef.current.addEventListener("scroll", handleScroll);
@@ -43,12 +53,13 @@ export const Message: React.FC<MessageProps> = ({
   }, [message]);
 
   return (
-    <div ref={messageRef} className="max-w-lg w-fit">
+    <div ref={messageRef} className="max-w-lg w-fit relative">
       <ItemPreview text={message.sender.username} image={message.sender.image}>
         <span className="text-gray-500">{formatDate(message.createdAt)}</span>
       </ItemPreview>
 
       <div
+        onMouseUp={() => setAction(!action)}
         className={clsx(
           "max-w-2xl w-full font-medium rounded-md mt-5 break-words",
           check ? " text-white" : "bg-gray-300"
@@ -69,11 +80,26 @@ export const Message: React.FC<MessageProps> = ({
           </div>
         )}
         {message.text && (
-          <div className="bg-blue-500 p-3 rounded-md">
+          <div
+            className={clsx(
+              !check ? "bg-gray-200 text-black" : "bg-blue-500",
+              " p-3 rounded-md"
+            )}
+          >
             <p className="break-words">{message.text}</p>
           </div>
         )}
       </div>
+      {message.sender._id === userId && action && (
+        <div className="absolute cursor-pointer right-1 bottom-0  z-40 p-1  flex items-center ">
+          <button onClick={() => setConfirm(true)}>
+            <MdDelete color="red" />
+          </button>
+        </div>
+      )}
+      {confirm && (
+        <Confirm cancel={() => setConfirm(false)} action={removeMessage} />
+      )}
     </div>
   );
 };

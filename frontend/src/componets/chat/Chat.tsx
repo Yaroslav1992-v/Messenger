@@ -10,12 +10,7 @@ import clsx from "clsx";
 import { useAppDispatch } from "../../store/createStore";
 import { getMessages, loadMessages, recivedMessage } from "../../store/message";
 import { groupMessagesByDate } from "../../utils/helpers";
-import {
-  getChat,
-  getNewestChatId,
-  loadChatById,
-  updateChat,
-} from "../../store/chat";
+import { getChat, getNewestChatId, loadChatById } from "../../store/chat";
 import { Message } from "../../store/types";
 export const Chat = () => {
   const currentUserId = useSelector(getCurrentUserId());
@@ -35,16 +30,16 @@ export const Chat = () => {
         }
       });
     }
-    if (activeChat) {
+    if (activeChat && chat) {
       dispatch(loadMessages(activeChat));
     }
-    if (!activeChat && newestChatId) {
+    if (!activeChat && newestChatId && !chat) {
       handleChat(newestChatId);
     }
     if (activeChat && activeChat !== chat?._id) {
       dispatch(loadChatById(activeChat));
     }
-  }, [activeChat, newestChatId, chat?._id]);
+  }, [activeChat, newestChatId, chat]);
 
   const user = chat ? chat.users.find((u) => u._id !== currentUserId) : null;
   const groupedMessages = groupMessagesByDate(messages);
@@ -75,5 +70,10 @@ export const Chat = () => {
         </div>
       </div>
     );
-  } else return <div>Div</div>;
+  } else
+    return (
+      <div className="text-xl d-flex items-center justify-center text-gray-500 m-auto">
+        Use search to find users to start a chat
+      </div>
+    );
 };

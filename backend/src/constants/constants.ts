@@ -10,3 +10,13 @@ export const PASSWORD_ERROR =
 export interface AuthUser {
   user: { id: Types.ObjectId; iat: number; exp: number };
 }
+export const WRONG_DATA_3TIMES =
+  'You entered password wrong 3 times you account has been blocked';
+export function hasPassed24Hours(previousDate: Date): boolean {
+  const millisecondsInADay = 24 * 60 * 60 * 1000; // Количество миллисекунд в одном дне
+
+  const currentDate = new Date();
+
+  const timeDifference = currentDate.getTime() - previousDate.getTime();
+  return timeDifference >= millisecondsInADay;
+}

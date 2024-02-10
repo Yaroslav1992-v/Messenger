@@ -12,8 +12,9 @@ import { DropDown, Typing } from "../..";
 import { formatDate } from "../../../utils/helpers";
 import { cutString } from "./../../../utils/helpers";
 import clsx from "clsx";
-import { updateChat } from "../../../store/chat";
+import { leaveChat, updateChat } from "../../../store/chat";
 import { useAppDispatch } from "../../../store/createStore";
+import localStorageService from "../../../service/localStorageService";
 
 export const ChatItem: React.FC<{
   chat: ChatOrGroupChat;
@@ -25,6 +26,7 @@ export const ChatItem: React.FC<{
   const handleClick = (e: any) => {
     openChat();
   };
+
   const [typing, setTyping] = useState<string | null>(null);
   const {
     openProfile,
@@ -40,7 +42,15 @@ export const ChatItem: React.FC<{
   };
   const dispatch = useAppDispatch();
   const user = chat.users.find((u) => u._id !== currentUser?._id);
-
+  const leave = () => {
+    const chatId = localStorageService.getChat();
+    if (currentUser) {
+      if (chatId === chat._id && chat._id === activeChat) {
+        handleChat("");
+      }
+      dispatch(leaveChat(currentUser._id, chat._id));
+    }
+  };
   const openChat = () => {
     handleChat(chat._id);
   };
@@ -49,21 +59,34 @@ export const ChatItem: React.FC<{
       openProfile(user._id);
     }
   };
-  const dropDownMenu = [
-    {
-      name: "Open",
-      action: openChat,
-    },
-    {
-      name: "Profile",
-      action: openUser,
-    },
-    {
-      name: "Delete",
-      action: () => {},
-      last: true,
-    },
-  ];
+  const dropDownMenu = chat.isGroup
+    ? [
+        {
+          name: "Open",
+          action: openChat,
+        },
+
+        {
+          name: "Delete",
+          action: leave,
+          last: true,
+        },
+      ]
+    : [
+        {
+          name: "Open",
+          action: openChat,
+        },
+        {
+          name: "Profile",
+          action: openUser,
+        },
+        {
+          name: "Delete",
+          action: leave,
+          last: true,
+        },
+      ];
   useEffect(() => {
     if (socket) {
       socket.off("new-message");

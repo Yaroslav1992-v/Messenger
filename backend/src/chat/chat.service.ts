@@ -35,6 +35,7 @@ export class ChatService {
     const chats = await this.chatModel
       .find({
         users: { $in: [userId] },
+        userThatLeft: { $ne: userId },
       })
       .sort({ lastMessageAt: -1 })
       .populate('users', 'username _id image')
@@ -60,5 +61,26 @@ export class ChatService {
       throw new NotFoundException(`Unutharized`);
     }
     return editedChat.populate('users', 'username _id image');
+  }
+  async leaveChat(data: {
+    chatId: Types.ObjectId;
+    userId: Types.ObjectId;
+  }): Promise<Chat> {
+    const chat = await this.chatModel.findById(data.chatId);
+
+    if (chat.isGroup) {
+      if (new Types.ObjectId(data.userId).equals(chat.admin)) {
+        chat.admin = chat.users.find(
+          (u) => !u._id.equals(new Types.ObjectId(data.userId)),
+        );
+      }
+      chat.users = chat.users.filter(
+        (u) => !u._id.equals(new Types.ObjectId(data.userId)),
+      );
+    } else {
+      chat.userThatLeft = data.userId;
+    }
+    chat.save();
+    return chat;
   }
 }

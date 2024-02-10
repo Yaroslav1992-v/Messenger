@@ -10,7 +10,7 @@ import { MessageArea } from "./MessageArea";
 import { MessageWithIMageForm } from "./MessageWithIMageForm";
 import { FaImage } from "react-icons/fa";
 import { white } from "../../colors/colors";
-import { updateChat } from "../../store/chat";
+import { editChat, updateChat } from "../../store/chat";
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 export const MessageForm: React.FC<MessageFormProps> = ({ chat, userId }) => {
@@ -60,7 +60,12 @@ export const MessageForm: React.FC<MessageFormProps> = ({ chat, userId }) => {
   };
   const handleSubmit = async (e: FormSubmit) => {
     e.preventDefault();
-
+    if (!chat.isGroup && "userThatLeft" in chat) {
+      const u = users.find((u) => u === chat.userThatLeft);
+      if (u) {
+        dispatch(editChat({ ...chat, userThatLeft: null } as any));
+      }
+    }
     if (message || image) {
       const newMessage: CreateMessageData = {
         sender: userId,
@@ -125,6 +130,7 @@ export const MessageForm: React.FC<MessageFormProps> = ({ chat, userId }) => {
           >
             <MessageWithIMageForm
               image={imagePreview}
+              changeImage={handleImage}
               handleEmoji={handleEmoji}
               openPicker={() => setPicker(!picker)}
               value={message}

@@ -9,6 +9,7 @@ const REFRESH_KEY = "jwt-refresh-token";
 const EXPIRES_KEY = "jwt-expires";
 const USERID_KEY = "user-local-id";
 const MODE = "mode";
+const ACTIVE_CHAT = "active-chat";
 export function setTokens({
   accessToken,
   refreshToken,
@@ -23,6 +24,14 @@ export function setTokens({
 }
 export function setMode({ mode }: { mode: "light" | "dark" }) {
   localStorage.setItem(MODE, mode);
+}
+export function setChat(chat: string | undefined) {
+  if (chat) {
+    localStorage.setItem(ACTIVE_CHAT, chat);
+  } else localStorage.removeItem(ACTIVE_CHAT);
+}
+export function getChat() {
+  return localStorage.getItem(ACTIVE_CHAT);
 }
 export function getMode(): "dark" | "light" | null {
   const mode = localStorage.getItem(MODE);
@@ -58,5 +67,7 @@ const localStorageService = {
   removeAuthData,
   setMode,
   getMode,
+  getChat,
+  setChat,
 };
 export default localStorageService;

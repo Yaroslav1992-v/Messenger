@@ -78,6 +78,10 @@ export const messagesSlice = createSlice({
       state.messages.push(action.payload);
       state.isLoading = false;
     },
+    messageDeleted: (state: MessagesState, action: PayloadAction<string>) => {
+      state.messages = state.messages.filter((m) => m._id !== action.payload);
+      state.isLoading = false;
+    },
   },
 });
 
@@ -117,12 +121,28 @@ export const updateMessage =
     try {
       dispatch(messagesUpdateRequested());
       const updatedMessage = await messageService.editMessage(message);
-      console.log(updatedMessage);
       dispatch(messagesUpdateSuccess(updatedMessage));
 
       if (unread) {
         dispatch(unreadDecrease(updatedMessage));
       }
+      return updatedMessage;
+    } catch (error: any) {
+      const message = error.response?.data?.message || "Something went wrong";
+      dispatch(messagesRequestFailed(message));
+    }
+  };
+export const deleteMessage =
+  (message: Message) => async (dispatch: AppDispatch) => {
+    try {
+      if (message.image) {
+        await fileService.deleteFile(message.image);
+      }
+      await messageService.deleteMessage(message._id);
+      dispatch(messageDeleted(message._id));
+      const updatedMessage = await messageService.editMessage(message);
+      dispatch(messagesUpdateSuccess(updatedMessage));
+
       return updatedMessage;
     } catch (error: any) {
       const message = error.response?.data?.message || "Something went wrong";
@@ -163,6 +183,7 @@ const {
   messagesUpdateRequested,
   messagesUpdateSuccess,
   unreadReceived,
+  messageDeleted,
   unreadDecrease,
 } = actions;
 export default messageReducer;

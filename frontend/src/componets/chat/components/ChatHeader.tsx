@@ -12,14 +12,21 @@ import { ChatSettingsModal } from "../../Modal/ChatSettingsModal";
 import { white } from "../../../colors/colors";
 import { UserMinData } from "../../../store/types";
 import { cutString } from "../../../utils/helpers";
+import localStorageService from "../../../service/localStorageService";
+import { useSelector } from "react-redux";
+import { getCurrentUser } from "../../../store/auth";
+import { useAppDispatch } from "../../../store/createStore";
+import { leaveChat } from "../../../store/chat";
 export const ChatHeader: React.FC<ChatHeaderProps> = ({
   name,
   image,
   info,
   chatId,
 }) => {
+  const currentUser = useSelector(getCurrentUser());
+  const dispatch = useAppDispatch();
   const { isDark, socket } = useApp();
-  const { openProfile, toggleMenu } = useApp();
+  const { openProfile, toggleMenu, handleChat, activeChat } = useApp();
   const [dropDown, setDropDown] = useState<boolean>(false);
   const [typing, setTyping] = useState<string | null>(null);
   const [modal, setModal] = useState<boolean>(false);
@@ -40,6 +47,13 @@ export const ChatHeader: React.FC<ChatHeaderProps> = ({
       });
     }
   }, []);
+  const leave = () => {
+    const chatId = localStorageService.getChat();
+    if (currentUser && chatId) {
+      handleChat("");
+      dispatch(leaveChat(currentUser._id, chatId));
+    }
+  };
   const dropDownMenu =
     typeof info !== "string"
       ? [
@@ -49,7 +63,7 @@ export const ChatHeader: React.FC<ChatHeaderProps> = ({
           },
           {
             name: "Leave",
-            action: () => {},
+            action: leave,
             last: true,
           },
         ]
@@ -60,7 +74,7 @@ export const ChatHeader: React.FC<ChatHeaderProps> = ({
           },
           {
             name: "Delete",
-            action: () => openProfile(info),
+            action: leave,
             last: true,
           },
         ];

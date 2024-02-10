@@ -38,3 +38,7 @@ export interface ItemPreviewProps {
   children?: ReactNode;
   className?: string;
 }
+export interface ConfirmProps {
+  cancel: () => void;
+  action: () => void;
+}

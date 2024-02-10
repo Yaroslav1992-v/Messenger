@@ -8,6 +8,7 @@ export const chatSchema = new Schema(
     image: { type: String },
     isGroup: { type: Boolean },
     admin: { type: Types.ObjectId, ref: 'User' },
+    userThatLeft: { type: Types.ObjectId, ref: 'User' },
     users: [{ type: Types.ObjectId, ref: 'User' }],
     lastMessage: { type: Types.ObjectId, ref: 'Message' },
   },
@@ -21,6 +22,7 @@ export interface Chat {
   admin?: Types.ObjectId;
   users: Types.ObjectId[];
   image?: string;
+  userThatLeft?: Types.ObjectId;
   lastMessage?: string;
   description?: string;
 }

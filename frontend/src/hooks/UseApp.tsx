@@ -67,6 +67,7 @@ const AppLoader = () => {
   const [activeChat, setActive] = useState<string>("");
   const handleChat = (id: string) => {
     setActive(id);
+    localStorageService.setChat(id);
     if (menuShow) {
       setMenuShow(false);
     }

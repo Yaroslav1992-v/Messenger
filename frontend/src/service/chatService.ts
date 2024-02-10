@@ -30,6 +30,16 @@ const chatService = {
     });
     return data;
   },
+  leaveChat: async (
+    userId: string,
+    chatId: string
+  ): Promise<ChatOrGroupChat> => {
+    const { data } = await httpService.patch(`${apiEndPoint}leave`, {
+      userId,
+      chatId,
+    });
+    return data;
+  },
 };
 
 export default chatService;

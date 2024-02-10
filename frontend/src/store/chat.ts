@@ -12,6 +12,7 @@ import {
 } from "./types";
 import chatService from "../service/chatService";
 import fileService from "../service/fileService";
+import localStorageService from "../service/localStorageService";
 
 interface ChatsState {
   isLoading: boolean;
@@ -89,6 +90,13 @@ export const chatsSlice = createSlice({
       state.chat = action.payload;
       state.isLoading = false;
     },
+    chatLeft: (state: ChatsState, action: PayloadAction<string>) => {
+      if (state.chat?._id === action.payload) {
+        state.chat = null;
+      }
+      state.chats = state.chats.filter((c) => c._id !== action.payload);
+      state.isLoading = false;
+    },
   },
 });
 export const createGroupChat =
@@ -118,7 +126,6 @@ export const createChat =
 
       const newChat = await chatService.createChat(data);
       dispatch(chatCreated(newChat));
-      console.log(newChat);
       return newChat._id;
     } catch (error: any) {
       const message = error.response?.data?.message || "Something went wrong";
@@ -139,6 +146,17 @@ export const loadChats = (userId: string) => async (dispatch: AppDispatch) => {
     dispatch(chatsRequestFailed(message));
   }
 };
+export const leaveChat =
+  (userId: string, chatId: string) => async (dispatch: AppDispatch) => {
+    try {
+      dispatch(chatActionRequest());
+      const updatedChat = await chatService.leaveChat(userId, chatId);
+      dispatch(chatLeft(updatedChat._id));
+    } catch (error: any) {
+      const message = error.response?.data?.message || "Something went wrong";
+      dispatch(chatsRequestFailed(message));
+    }
+  };
 export const editChat =
   (chat: EditChatData, file?: File) => async (dispatch: AppDispatch) => {
     let image;
@@ -158,6 +176,7 @@ export const editChat =
       dispatch(chatEdited(updatedChat));
       return "Chat Edited";
     } catch (error: any) {
+      console.log(error.response);
       const message = error.response?.data?.message || "Something went wrong";
       dispatch(chatsRequestFailed(message));
     }
@@ -175,6 +194,11 @@ export const loadChatById =
     }
   };
 export const getNewestChatId = () => (state: { chatStore: ChatsState }) => {
+  const chatId = localStorageService.getChat();
+  const chat = state.chatStore.chats.find((c) => c._id === chatId);
+  if (chat) {
+    return chat._id;
+  }
   if (state.chatStore.chats.length > 0) {
     return state.chatStore.chats[0]._id;
   }
@@ -201,6 +225,7 @@ const {
   chatEdited,
   chatUpdate,
   chatActionRequest,
+  chatLeft,
 } = actions;
 
 export default chatsReducer;

@@ -13,6 +13,7 @@ export const userSchema = new Schema(
     profession: { type: String },
     about: { type: String },
     social: [{ type: Object }],
+    locked: { type: Number, default: 0 },
   },
   { timestamps: true },
 );
@@ -28,6 +29,8 @@ export interface User {
   about?: string;
   profession?: string;
   social: Social[];
+  locked?: number;
+  updatedAt: Date;
 }
 export interface UserData extends User {
   _id: Types.ObjectId;

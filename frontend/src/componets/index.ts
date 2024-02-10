@@ -24,3 +24,4 @@ export * from "./ItemPreview";
 export * from "./chats/Chats";
 export * from "./Users/Users";
 export * from "./Typing";
+export * from "./Confirm";

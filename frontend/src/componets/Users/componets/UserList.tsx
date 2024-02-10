@@ -8,11 +8,11 @@ export const UserList: React.FC<{ users: UserMinData[] }> = ({ users }) => {
   const { isDark } = useApp();
 
   return (
-    <ul>
+    <ul className=" h-screen">
       {users.map((u, i) => (
         <li
           className={clsx(
-            "mb-5 py-4 z-20  px-6 border-b  cursor-pointer user-item",
+            "mb-5 py-4 z-20    px-6 border-b  cursor-pointer user-item",
             isDark ? "border-gray-700" : "border-gray-200"
           )}
           key={u.username + i}

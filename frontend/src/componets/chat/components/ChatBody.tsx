@@ -40,7 +40,7 @@ export const ChatBody: React.FC<ChatBodyProps> = ({
     >
       {messages.map((d, i) => (
         <div key={i} className="flex w-full flex-col">
-          <div className="flex mx-auto p-1 rounded-md text-gray-100 bg-gray-400">
+          <div className="flex mx-auto p-1 rounded-md text-gray-100 mb-2 bg-gray-400">
             {getReadableDate(d[0].createdAt)}
           </div>
           <ul className="w-full flex flex-col">

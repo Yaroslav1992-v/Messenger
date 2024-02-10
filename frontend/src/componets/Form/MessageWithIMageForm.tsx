@@ -8,23 +8,28 @@ import { BounceLoader } from "react-spinners";
 import { bluePrimary } from "../../colors/colors";
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
+import { AddImageField } from "./AddImageField";
 export const MessageWithIMageForm: React.FC<MessageWithImageProps> = ({
   image,
   value,
   onChange,
   openPicker,
+  changeImage,
   handleEmoji,
   picker,
 }) => {
   const isLoading = useSelector(getIsLoading());
   return (
     <div className="p-4 flex flex-col  md:p-5 w-full">
-      <div className="mb-5 rounded-md  h-72">
+      <div className="mb-5 rounded-md  h-72 relative">
         <img
           className="rounded-md object-contain w-full h-full"
           src={image}
           alt="Message img"
         />
+        <div style={{ top: "-15px" }} className="absolute right-0  ">
+          <AddImageField onChange={changeImage} />
+        </div>
       </div>
       <div className="flex items-end mb-2  rounded-lg w-full relative">
         {picker && (

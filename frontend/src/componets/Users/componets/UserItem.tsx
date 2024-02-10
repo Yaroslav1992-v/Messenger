@@ -52,7 +52,7 @@ export const UserItem: React.FC<{ user: UserMinData }> = ({ user }) => {
       </div>
       {dropDown && (
         <div
-          className="absolute z-20 dropD hidden"
+          className="absolute z-40 dropD hidden"
           style={{ right: "-50px", top: "0" }}
         >
           <DropDown menu={dropDownMenu} />

@@ -83,6 +83,10 @@ export const authSlice = createSlice({
     },
     authErrorReset: (state: AuthState) => {
       state.error = null;
+      state.authSuccess = null;
+    },
+    authSuccessReset: (state: AuthState) => {
+      state.authSuccess = null;
     },
     userEditRequested: (state: AuthState) => {
       state.isLoading = true;
@@ -135,11 +139,16 @@ export const signIn = (payload: LoginData) => async (dispatch: Dispatch) => {
     dispatch(
       authRequestSuccess([{ userId: data._id }, { message: "Logged In!" }])
     );
+    setTimeout(() => {
+      dispatch(authSuccessReset());
+    }, 500);
     return true;
   } catch (error: any) {
     const message = error.response?.data?.message || "Something went wrong";
-
     dispatch(authRequestFailed(message));
+    setTimeout(() => {
+      dispatch(authErrorReset());
+    }, 500);
   }
 };
 export const resetAuthError = () => (dispatch: Dispatch) => {
@@ -237,6 +246,7 @@ const {
   authErrorReset,
   userEditRequested,
   userEdited,
+  authSuccessReset,
 } = actions;
 
 export default authReducer;
