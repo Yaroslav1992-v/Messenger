@@ -98,7 +98,10 @@ export const GroupForm: React.FC<GroupFormProps> = ({ chat }) => {
         description: data.description,
       };
       if (!chatType) {
-        dispatch(createGroupChat(groupChat, image));
+        const newChat = await dispatch(createGroupChat(groupChat, image));
+        if (newChat) {
+          showToastMessage("success", "Chat created");
+        }
       } else {
         if (chat.admin !== currentUserId) {
           showToastMessage("error", "Unuthorized");

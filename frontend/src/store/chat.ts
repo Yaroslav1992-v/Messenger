@@ -125,6 +125,7 @@ export const createChat =
       dispatch(chatActionRequest());
 
       const newChat = await chatService.createChat(data);
+
       dispatch(chatCreated(newChat));
       return newChat._id;
     } catch (error: any) {

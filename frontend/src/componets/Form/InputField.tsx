@@ -31,7 +31,7 @@ export const InputField: React.FC<InputFieldProps> = ({
           value={value}
           id={name}
           className={clsx(
-            "bg-gray-50 border   text-gray-900 text-sm rounded-lg",
+            "bg-gray-50 border   text-sm rounded-lg",
             " focus:outline-blue-500 focus:border-primary-600 block w-full p-2.5",
             error ? "border-red-600 mb-2" : "border-gray-300",
             isDark

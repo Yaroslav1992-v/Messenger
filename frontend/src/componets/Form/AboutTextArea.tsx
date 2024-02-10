@@ -1,5 +1,7 @@
 import React from "react";
 import { InputFieldProps } from "./formTypes";
+import { useApp } from "../../hooks/UseApp";
+import clsx from "clsx";
 
 export const AboutTextArea: React.FC<InputFieldProps> = ({
   label,
@@ -8,11 +10,15 @@ export const AboutTextArea: React.FC<InputFieldProps> = ({
   placeholder,
   onChange,
 }) => {
+  const { isDark } = useApp();
   return (
     <div className="mb-4">
       <label
         htmlFor={name}
-        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+        className={clsx(
+          "block mb-2 text-sm font-medium text-gray-900 dark:text-white",
+          isDark ? "text-white" : "text-gray-900"
+        )}
       >
         {label}
       </label>

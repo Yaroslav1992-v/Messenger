@@ -208,6 +208,7 @@ export const editUser =
 export const logOut = () => (dispatch: Dispatch) => {
   dispatch(loggedOut());
   localStorageService.removeAuthData();
+  localStorageService.setChat("");
 };
 export const getAuthError =
   () =>
